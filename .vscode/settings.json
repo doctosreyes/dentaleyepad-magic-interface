@@ -1,0 +1,20 @@
+{
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": null,
+  "editor.codeActionsOnSave": ["source.fixAll.prettier"],
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "vue"],
+  "vue3snippets.enable-compile-vue-file-on-did-save-code": true,
+  "vue3snippets.singleQuote": true,
+  "vue3snippets.semi": false,
+  "autoimport.useSemiColon": false,
+  "prettier.semi": false,
+  "prettier.jsxSingleQuote": true,
+  "vue3snippets.trailingComma": "none",
+  "prettier.trailingComma": "none",
+  "javascript.format.semicolons": "ignore",
+  "[vue]": {
+    "editor.defaultFormatter": null
+  }
+}

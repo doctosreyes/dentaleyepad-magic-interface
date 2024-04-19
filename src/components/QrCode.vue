@@ -74,9 +74,9 @@ onMounted(() => {
     qr.value = ''
     qrImage = ''
   })
-  window.pl.receive('argv', (argv) => {
-    log.debug(`QrCode renderer argv: ${argv}`)
-    qr.value = process.env.PROD ? argv[2] : argv[4]
+  window.pl.receive('args', (args) => {
+    log.debug(`QrCode renderer args: ${args}`)
+    qr.value = process.env.PROD ? args[2] : args[4]
     openQrCode()
   })
 })

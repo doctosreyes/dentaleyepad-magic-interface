@@ -3,6 +3,10 @@
   <head>
     <title><%= productName %></title>
 
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' data: ; img-src 'self'; connect-src 'self'"
+    />
     <meta charset="utf-8">
     <meta name="description" content="<%= productDescription %>">
     <meta name="format-detection" content="telephone=no">

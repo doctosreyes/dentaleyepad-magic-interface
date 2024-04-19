@@ -1,5 +1,5 @@
 import { contextBridge, ipcRenderer } from 'electron'
-import log from 'electron-log/main'
+import log from 'electron-log'
 
 contextBridge.exposeInMainWorld('pl', {
   send: (channel, data) => {
@@ -11,5 +11,13 @@ contextBridge.exposeInMainWorld('pl', {
   },
   removeReceiveListener: (channel) => {
     ipcRenderer.removeAllListeners(channel)
+  },
+  getSettingValue: async (key) => {
+    try {
+      return await ipcRenderer.invoke('getSettingValue', key)
+    } catch (error) {
+      log.error('Fehler beim Abrufen des Werts', error)
+      throw error // Fehler weitergeben, um ihn in Ihrer QrCode.vue-Datei zu behandeln
+    }
   }
 })
