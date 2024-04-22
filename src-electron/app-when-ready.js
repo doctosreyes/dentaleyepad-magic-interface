@@ -30,7 +30,6 @@ function createWindow () {
     frame: false,
     useContentSize: true,
     webPreferences: {
-      enableRemoteModule: true,
       sandbox: false,
       contextIsolation: true,
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD)
