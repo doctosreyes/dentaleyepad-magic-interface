@@ -26,6 +26,7 @@
           <q-item-label>Home</q-item-label>
         </q-item-section>
       </q-item>
+
       <q-item class="q-mt-sm" to="/settings">
         <q-item-section avatar>
           <q-icon name="settings" />
@@ -34,6 +35,16 @@
           <q-item-label>Settings</q-item-label>
         </q-item-section>
       </q-item>
+
+      <q-item class="q-mt-sm" to="/remoteSupport">
+        <q-item-section avatar>
+          <q-icon name="settings" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>Online Support</q-item-label>
+        </q-item-section>
+      </q-item>
+
     </q-drawer>
 
     <q-page-container>
