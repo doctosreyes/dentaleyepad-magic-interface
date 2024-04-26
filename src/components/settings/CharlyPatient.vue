@@ -18,13 +18,16 @@ window.pl
     typeof res !== 'undefined' ? (patientFile.value = res) : (patientFile.value = false)
   )
 watch(patientFile, (val) => {
-  window.pl
-    .getSettingValue('patientFile')
-    .then((res) => {
-      if (val !== res) {
-        window.pl.send('settingSet', { key: 'patientFile', value: val })
-      }
-    })
-    .catch((err) => log.error(err))
+  const result = window.pl.getSettingValue('patientFile')
+  if (result !== val && val === true) {
+    window.pl.send('settingSet', { key: 'patientFile', value: val })
+    if (process.env.DEV) {
+      log.debug('patmanager RESTART')
+      return
+    }
+    window.pl.send('app:relaunch')
+  } else if (result !== val && val === false) {
+    window.pl.send('settingSet', { key: 'patientFile', value: val })
+  }
 })
 </script>
