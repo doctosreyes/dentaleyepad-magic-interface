@@ -1,14 +1,9 @@
 <template>
   <div :key="qr" id="qr">
-    <div class="" @click="openQrCode()" v-html="generateQrCode"></div>
+    <div class="" v-html="generateQrCode"></div>
   </div>
   <div v-if="qrNotEmpty">
-    <div
-      class="q-pl-md"
-      id="qrData"
-      v-for="(qrData, index) in qrArray"
-      :key="index"
-    >
+    <div class="q-pl-md" id="qrData" v-for="(qrData, index) in qrArray" :key="index">
       <div v-if="index === 0 && qrData.length > 0">
         Praxis-Nr.: <span class="q-pl-sm">{{ qrData }}</span>
       </div>
@@ -55,7 +50,7 @@ const generateQrCode = computed(() => {
   return qrImage
 })
 
-const openQrCode = () => {
+/* const openQrCode = () => {
   const newWindow = window.open(
     '',
     '_blank',
@@ -64,12 +59,9 @@ const openQrCode = () => {
   newWindow.document.write(qrImage)
   newWindow.document.write(qr.value)
   newWindow.document.close()
-}
+} */
 
 onMounted(() => {
-  window.pl.receive('openQrCode', () => {
-    openQrCode()
-  })
   window.pl.receive('resetQrCode', () => {
     qr.value = ''
     qrImage = ''
@@ -77,13 +69,11 @@ onMounted(() => {
   window.pl.receive('args', (args) => {
     log.debug(`QrCode renderer args: ${args}`)
     qr.value = process.env.PROD ? args[2] : args[4]
-    openQrCode()
   })
 })
 
 onUnmounted(() => {
   window.pl.removeReceiveListener('argv')
-  window.pl.removeReceiveListener('openQrCode')
   window.pl.removeReceiveListener('resetQrCode')
 })
 </script>

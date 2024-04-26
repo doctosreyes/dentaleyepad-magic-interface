@@ -20,6 +20,7 @@ if (!gotTheLock) {
 } else {
   app.on('second-instance', (ev, args) => {
     mainWindow.webContents.send('args', args)
+    mainWindow.show()
   })
 
   app.whenReady().then(() => {
