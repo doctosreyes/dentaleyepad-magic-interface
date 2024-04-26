@@ -1,7 +1,7 @@
-// This is just an example,
-// so you can safely delete all default props below
-
 export default {
-  failed: 'Action failed',
-  success: 'Action was successful'
+  remote: {
+    menuTitle: 'online support',
+    title: 'Remote maintenance application',
+    hint: 'So that we can help you directly on your PC, please press one of the two buttons depending on the information provided by the support employee.'
+  }
 }
