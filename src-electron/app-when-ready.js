@@ -4,7 +4,7 @@ import { trayTranslations, toggleMainWindow } from './main-functions'
 import { iconPath } from './electron-main'
 import constants from '../constants.json'
 import log from 'electron-log'
-import settings from 'electron-settings'
+import settings from 'src/app/AppSettings'
 
 let mainWindow, appTray
 

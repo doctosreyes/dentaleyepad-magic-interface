@@ -1,4 +1,4 @@
-import settings from 'electron-settings'
+import settings from 'src/app/AppSettings'
 import { mainWindow } from './app-when-ready'
 import constants from '../constants.json'
 import log from 'electron-log'

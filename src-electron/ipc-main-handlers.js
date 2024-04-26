@@ -4,7 +4,6 @@ import log from 'electron-log/main'
 import constants from '../constants.json'
 import { trayTranslations, delay } from './main-functions'
 import { iconPath } from './electron-main'
-import settings from 'electron-settings'
 
 ipcMain.on('appRestart', async () => {
   log.debug('app restart initiated')
@@ -18,16 +17,6 @@ ipcMain.on('appRestart', async () => {
     } catch (error) {
       log.error(error)
     }
-  }
-})
-
-ipcMain.on('settingSet', async (ev, data) => {
-  try {
-    await settings.set(`${data.key}`, data.value)
-    log.debug(`settings.set key: ${data.key}, value: ${data.value}`)
-  } catch (error) {
-    console.error(`settings.set key: ${data.key}, value: ${data.value}`, error)
-    throw error // Fehler weitergeben, um ihn in der QrCode.vue-Datei zu behandeln
   }
 })
 
@@ -45,8 +34,4 @@ ipcMain.on('closeAppToTray', () => {
     title: constants.app.title,
     content: trayTranslations().content
   })
-})
-
-ipcMain.handle('getSettingValue', (event, key) => {
-  return settings.get(key)
 })
