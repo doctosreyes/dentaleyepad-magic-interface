@@ -20,12 +20,6 @@ ipcMain.on('appRestart', async () => {
   }
 })
 
-ipcMain.on('openQrCode', () => {
-  log.debug('ipcMain on openQrCode START')
-  mainWindow.webContents.send('openQrCode')
-  log.debug('ipcMain on openQrCode after WebContent Send')
-})
-
 ipcMain.on('closeAppToTray', () => {
   log.debug('ipc-main-handlers closeAppToTray')
   mainWindow.hide()
@@ -34,4 +28,9 @@ ipcMain.on('closeAppToTray', () => {
     title: constants.app.title,
     content: trayTranslations().content
   })
+})
+
+app.on('before-quit', () => {
+  ipcMain.removeAllListeners('closeAppToTray')
+  ipcMain.removeAllListeners('appRestart')
 })
