@@ -13,27 +13,16 @@
   </div>
 </template>
 
-<script>
-import child from 'child_process'
-import path from 'path'
-import log from 'electron-log'
+<script setup>
 import { openURL } from 'quasar'
-
-export default {
-  methods: {
-    startRemote (remote) {
-      const pathOfRemote = path.join(__statics, remote)
-      if (process.platform === 'win32') {
-        child.execFile(pathOfRemote, (err, data) => {
-          if (err) {
-            log.error('Remote startRemote ERROR: ', err)
-          }
-          log.info('startRemote: ', remote)
-        })
-      } else {
-        remote === 'SplashtopSOS.exe' ? openURL('https://www.splashtop.com/de/sos-download') : openURL('https://dentaleyepad.de/wp-content/service_download/TeamViewerQS.dmg')
-      }
-    }
+import log from 'electron-log'
+const startRemote = (app) => {
+  const processPlatform = process.platform
+  log.debug(`platform = ${processPlatform}`)
+  if (processPlatform !== 'darwin') {
+    window.pl.openRemoteTool(app)
+  } else {
+    app === 'SplashtopSOS.exe' ? openURL('https://www.splashtop.com/de/sos-download') : openURL('https://dentaleyepad.de/wp-content/service_download/TeamViewerQS.dmg')
   }
 }
 </script>

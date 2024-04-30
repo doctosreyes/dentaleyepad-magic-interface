@@ -1,5 +1,5 @@
 <template>
-  <q-page padding> RemoteSupport
+  <q-page padding>
     <doc-sos></doc-sos>
   </q-page>
 </template>

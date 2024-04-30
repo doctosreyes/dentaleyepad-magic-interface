@@ -30,5 +30,9 @@ contextBridge.exposeInMainWorld('pl', {
       log.error('Fehler beim Abrufen des Werts', error)
       throw error // Fehler weitergeben, um ihn in Ihrer QrCode.vue-Datei zu behandeln
     }
+  },
+  openRemoteTool: (remoteTool) => {
+    log.debug('preload openRemoteTool: ', remoteTool)
+    ipcRenderer.send('openRemoteTool', remoteTool)
   }
 })
