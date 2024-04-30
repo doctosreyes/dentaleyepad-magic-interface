@@ -16,6 +16,9 @@
       <div v-if="index === 3">
         Vorname: <span class="q-pl-sm">{{ qrData }}</span>
       </div>
+      <div v-if="index === 4">
+        Geburtsdatum: <span class="q-pl-sm">{{ qrData }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -68,12 +71,16 @@ onMounted(() => {
   })
   window.pl.receive('args', (args) => {
     log.debug(`QrCode renderer args: ${args}`)
-    qr.value = process.env.PROD ? args[2] : args[4]
+    if (typeof args === 'string') {
+      qr.value = args
+    } else {
+      qr.value = process.env.PROD ? args[2] : args[4]
+    }
   })
 })
 
 onUnmounted(() => {
-  window.pl.removeReceiveListener('argv')
+  window.pl.removeReceiveListener('args')
   window.pl.removeReceiveListener('resetQrCode')
 })
 </script>

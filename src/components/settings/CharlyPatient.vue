@@ -4,12 +4,26 @@
       <span style="width: 80%">Patient File</span>
       <q-toggle class="absolute-right" v-model="patientFile" color="primary" />
     </p>
+    <p v-if="patientFile">
+      patientFilePath: {{ patientFilePath }}
+    </p>
+
   </div>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import log from 'electron-log'
+
+const patientFilePath = ref(null)
+onMounted(() => {
+  window.pl.getSettingValue('paths.programData')
+    .then((res) => {
+      const filePath = `${res}\\patient.txt`
+      patientFilePath.value = filePath
+    })
+    .catch(err => log.error(err))
+})
 
 const patientFile = ref(false)
 window.pl
@@ -18,16 +32,19 @@ window.pl
     typeof res !== 'undefined' ? (patientFile.value = res) : (patientFile.value = false)
   )
 watch(patientFile, (val) => {
-  const result = window.pl.getSettingValue('patientFile')
-  if (result !== val && val === true) {
-    window.pl.send('settingSet', { key: 'patientFile', value: val })
-    if (process.env.DEV) {
-      log.debug('patmanager RESTART')
-      return
-    }
-    window.pl.send('app:relaunch')
-  } else if (result !== val && val === false) {
-    window.pl.send('settingSet', { key: 'patientFile', value: val })
-  }
+  window.pl.getSettingValue('patientFile')
+    .then((result) => {
+      if (result !== val && val === true) {
+        window.pl.send('settingSet', { key: 'patientFile', value: val })
+        if (process.env.DEV) {
+          log.debug('patmanager RESTART')
+          return
+        }
+        window.pl.send('app:relaunch')
+      } else if (result !== val && val === false) {
+        window.pl.send('settingSet', { key: 'patientFile', value: val })
+      }
+    })
+    .catch(err => log.error(err))
 })
 </script>

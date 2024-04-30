@@ -20,14 +20,17 @@ onUnmounted(() => {
 })
 
 watch(connector, (val) => {
-  const result = window.pl.getSettingValue('connector')
-  if (result !== val) {
-    window.pl.send('settingSet', { key: 'connector', value: val })
-    if (process.env.DEV) {
-      log.debug('patmanager RESTART')
-      return
-    }
-    window.pl.send('app:relaunch')
-  }
+  window.pl.getSettingValue('connector')
+    .then((result) => {
+      if (result !== val) {
+        window.pl.send('settingSet', { key: 'connector', value: val })
+        if (process.env.DEV) {
+          log.debug('patmanager RESTART')
+          return
+        }
+        window.pl.send('app:relaunch')
+      }
+    })
+    .catch(err => log.error(err))
 })
 </script>

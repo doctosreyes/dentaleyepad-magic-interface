@@ -5,6 +5,11 @@ import constants from '../constants.json'
 import { trayTranslations, delay } from './main-functions'
 import { iconPath } from './electron-main'
 
+ipcMain.on('args', (ev, data) => {
+  mainWindow.webContents.send('args', data)
+  log.debug(`ipc-main-handlers send args: ${data}`)
+})
+
 ipcMain.on('appRestart', async () => {
   log.debug('app restart initiated')
   if (process.env.DEV) {

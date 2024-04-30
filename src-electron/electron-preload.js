@@ -1,9 +1,11 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import log from 'electron-log'
+import fs from 'fs'
 
 contextBridge.exposeInMainWorld('pl', {
+  fs: fs,
   send: (channel, data) => {
-    log.debug(`preload send: ${channel} ${data}`)
+    log.debug(`preload send: ${channel} ${JSON.stringify(data)}`)
     ipcRenderer.send(channel, data)
   },
   receive: (channel, func) => {
