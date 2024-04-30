@@ -10,6 +10,10 @@ ipcMain.on('args', (ev, data) => {
   log.debug(`ipc-main-handlers send args: ${data}`)
 })
 
+ipcMain.on('showMainWindow', () => {
+  mainWindow.show()
+})
+
 ipcMain.on('appRestart', async () => {
   log.debug('app restart initiated')
   if (process.env.DEV) {
