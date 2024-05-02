@@ -4,6 +4,7 @@ import { mainWindow } from '../app-when-ready'
 import { app, Notification, ipcMain } from 'electron'
 import path from 'path'
 import AppSettings from './AppSettings'
+import constants from '../../constants.json'
 
 let note
 
@@ -18,9 +19,9 @@ app.on('before-quit', () => {
 })
 
 app.on('ready', () => {
-  app.setAppUserModelId('dentaleyepad-media-manager')
+  app.setAppUserModelId(constants.app.title)
   note = new Notification({
-    title: 'dentaleyepad-media-manager',
+    title: constants.app.title,
     body: 'UPDATE',
     silent: 'true',
     timeoutType: 'default',
@@ -28,6 +29,7 @@ app.on('ready', () => {
   })
 
   ipcMain.on('update:check', () => {
+    log.debug('autoUpdate.js ipcMain.on -> update:check')
     autoUpdate()
   })
 
@@ -38,6 +40,12 @@ app.on('ready', () => {
 
 // ~~~~~~   AUTOUPDATE   ~~~~~~
 export default function autoUpdate () {
+  if (process.env.DEV) {
+    log.debug('autoUpdate DEV-MODE')
+    // Useful for some dev/debugging tasks, but download can
+    // not be validated becuase dev app is not signed
+    autoUpdater.forceDevUpdateConfig = true
+  }
   autoUpdater.logger = log
   autoUpdater.logger.transports.file.level = 'info'
   autoUpdater.autoDownload = false
