@@ -18,6 +18,15 @@
       show-if-above
       bordered
     >
+    <q-item v-if="devMode" class="q-mt-sm" to="/tests">
+        <q-item-section avatar>
+          <q-icon name="test" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>Test</q-item-label>
+        </q-item-section>
+      </q-item>
+
       <q-item class="q-mt-sm" to="/">
         <q-item-section avatar>
           <q-icon name="home" />
@@ -58,13 +67,16 @@ import { ref } from 'vue'
 import log from 'electron-log'
 import { useI18n } from 'vue-i18n'
 
-const { locale } = useI18n({ useScope: 'global' })
+const devMode = ref(process.env.DEV)
 
+// #region LANGUAGE
+const { locale } = useI18n({ useScope: 'global' })
 window.pl.getSettingValue('language')
   .then((lang) => {
     locale.value = lang
   })
   .catch(err => log.error(err))
+// #endregion LANGUAGE
 
 const closeAppToTray = () => {
   log.debug('closeAppToTray')
