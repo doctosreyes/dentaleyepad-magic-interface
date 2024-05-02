@@ -168,7 +168,18 @@ const settings = {
       log.error(`Error at writing AppSettings file:\n${error}`)
     }
   }
-}
+} // #endregion SETTINGS OBJECT
+
+if (!fs.existsSync(settings.programDataPath)) {
+  fs.mkdir(settings.programDataPath, (err) => {
+    if (err) {
+      log.error(err)
+    } else {
+      log.info(`mkdir ${settings.programDataPath}: SUCCESS`)
+    }
+  })
+} else { log.debug(`${settings.programDataPath}: EXISTS`) }
+
 // #region MAIN LISTENERS
 ipcMain.handle('hasSetting', (event, key) => {
   return settings.has(key)
