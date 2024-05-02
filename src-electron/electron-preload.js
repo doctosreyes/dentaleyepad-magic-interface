@@ -3,7 +3,8 @@ import log from 'electron-log'
 import fs from 'fs'
 
 contextBridge.exposeInMainWorld('pl', {
-  fs: fs,
+  fsStat: fs.stat,
+  fsReadFile: fs.readFile,
   send: (channel, data) => {
     log.debug(`preload send: ${channel} ${JSON.stringify(data)}`)
     ipcRenderer.send(channel, data)
@@ -32,9 +33,5 @@ contextBridge.exposeInMainWorld('pl', {
       log.error('Fehler beim Abrufen des Werts', error)
       throw error // Fehler weitergeben, um ihn in Ihrer QrCode.vue-Datei zu behandeln
     }
-  },
-  openRemoteTool: (remoteTool) => {
-    log.debug('preload openRemoteTool: ', remoteTool)
-    ipcRenderer.send('openRemoteTool', remoteTool)
   }
 })
