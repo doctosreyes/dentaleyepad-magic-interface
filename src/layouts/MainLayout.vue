@@ -4,7 +4,7 @@
       <q-toolbar>
         <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title class="q-electron-drag">
+        <q-toolbar-title class="text-body1 q-electron-drag">
           dentaleyepad
         </q-toolbar-title>
         <q-btn flat round dense @click="closeAppToTray()" icon="close" />
@@ -56,6 +56,15 @@
 <script setup>
 import { ref } from 'vue'
 import log from 'electron-log'
+import { useI18n } from 'vue-i18n'
+
+const { locale } = useI18n({ useScope: 'global' })
+
+window.pl.getSettingValue('language')
+  .then((lang) => {
+    locale.value = lang
+  })
+  .catch(err => log.error(err))
 
 const closeAppToTray = () => {
   log.debug('closeAppToTray')

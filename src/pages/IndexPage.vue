@@ -1,7 +1,9 @@
 <template>
-  <q-page padding>
-    <QrCode></QrCode>
-  </q-page>
+  <div>
+    <div class="q-ml-lg q-mt-sm">
+      <QrCode></QrCode>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -63,7 +65,7 @@ onUnmounted(() => {
 })
 
 const readPatientFile = () => {
-  window.pl.fs.stat(pathPatientFile.value, (err, stats) => {
+  window.pl.fsStat(pathPatientFile.value, (err, stats) => {
     if (err) {
       if (err.code !== 'ENOENT') log.error('readPatientFile: ' + err)
     } else {
@@ -74,7 +76,7 @@ const readPatientFile = () => {
       if (typeof patientFileData.value === 'string') patientFileData.value = new Date(patientFileData.value)
       // log.debug('types', patientFileData.value, typeof patientFileData.value, fileTime, typeof fileTime)
       if (patientFileData.value.valueOf() !== fileTime.valueOf()) {
-        window.pl.fs.readFile(pathPatientFile.value, 'latin1', (err, data) => {
+        window.pl.fsReadFile(pathPatientFile.value, 'latin1', (err, data) => {
           if (err) {
             log.error(err)
           } else {

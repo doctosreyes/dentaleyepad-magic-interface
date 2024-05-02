@@ -4,16 +4,20 @@ import { trayTranslations, toggleMainWindow } from './main-functions'
 import { iconPath } from './electron-main'
 import constants from '../constants.json'
 import log from 'electron-log'
-import settings from 'src/app/AppSettings'
+import settings from 'app/src-electron/app/AppSettings'
+import autoUpdate from './app/autoUpdate'
 
 let mainWindow, appTray
 
+autoUpdate()
+
 function initSettings () {
+  let language
   if (settings.hasSync('language')) {
-    const language = settings.getSync('language')
+    language = settings.getSync('language')
     log.debug(`language is: ${language}`)
   } else {
-    const language = app.getLocale()
+    language = app.getLocale()
     settings.setSync('language', language)
     log.debug(`language set to: ${language}`)
   }
@@ -25,8 +29,8 @@ function createWindow () {
    */
   mainWindow = new BrowserWindow({
     icon: path.resolve(__dirname, 'icons/icon.png'), // tray icon
-    width: 480,
-    height: 640,
+    width: 200,
+    height: 250,
     frame: false,
     useContentSize: true,
     webPreferences: {
