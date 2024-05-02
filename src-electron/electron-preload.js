@@ -3,6 +3,7 @@ import log from 'electron-log'
 import fs from 'fs'
 
 contextBridge.exposeInMainWorld('pl', {
+  processPlatform: process.platform,
   fsStat: fs.stat,
   fsReadFile: fs.readFile,
   send: (channel, data) => {
