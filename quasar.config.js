@@ -200,6 +200,13 @@ module.exports = configure(function (/* ctx */) {
         // https://www.electron.build/configuration/configuration
 
         appId: "dentaleyepad-patient-grabber",
+        win: {
+          publish: [{
+            provider: 'generic',
+            url: 'https://patient-grabber.dentaleyepad.de/v0',
+            channel: 'latest'
+          }]
+        }
       },
     },
 
