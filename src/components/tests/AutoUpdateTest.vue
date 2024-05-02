@@ -1,8 +1,10 @@
 <template>
   <div>
-    AUTO UPDATE TEST
+    <q-btn @click="checkAutoUpdate">Check AutoUpdate</q-btn>
   </div>
 </template>
-<script set>
-
+<script setup>
+const checkAutoUpdate = () => {
+  window.pl.send('update:check')
+}
 </script>
