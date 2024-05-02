@@ -19,10 +19,13 @@ import constants from '../../constants.json'
 import log from 'electron-log'
 
 const startRemote = (app) => {
-  const processPlatform = process.platform
+  const processPlatform = window.pl.processPlatform
   log.debug(`platform = ${processPlatform}`)
-  if (processPlatform !== 'darwin') { // IF OS !== MacOS
-    app === 'SplashtopSOS.exe' ? openURL(constants.remote.sos) : openURL(constants.remote.qs)
+  if (processPlatform === 'win32') { // IF OS !== MacOS
+    app === 'SplashtopSOS.exe' ? openURL(constants.remote.sos, undefined, {
+      title: `Download ${app} - dentaleyepad - doctorseyes GmbH`,
+      center: true
+    }) : openURL(constants.remote.qs)
   } else {
     app === 'SplashtopSOS.exe' ? openURL('https://www.splashtop.com/de/sos-download') : openURL('https://dentaleyepad.de/wp-content/service_download/TeamViewerQS.dmg')
   }
