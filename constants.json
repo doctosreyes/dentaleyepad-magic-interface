@@ -1,5 +1,9 @@
 {
   "app": {
     "title": "dentaleyepad-patient-grabber"
+  },
+  "remote": {
+    "sos": "https://patient-grabber.dentaleyepad.de/remote/SplashtopSOS.exe",
+    "qs": "https://patient-grabber.dentaleyepad.de/remote/TeamViewerQS.exe"
   }
 }

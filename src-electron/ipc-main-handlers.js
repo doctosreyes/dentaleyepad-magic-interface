@@ -39,21 +39,9 @@ ipcMain.on('closeAppToTray', () => {
   })
 })
 
-ipcMain.on('openRemoteTool', (ev, remoteTool) => {
-  const { execFile } = require('node:child_process')
-  const exePath = process.env.DEV ? `./public/${remoteTool}` : `${remoteTool}`
-  log.debug(`ipc-main-handlers openRemoteTool exePath: ${exePath}`)
-  execFile(exePath, (err, stdout, stderr) => {
-    if (err) {
-      log.error(err)
-    }
-    log.error(stderr)
-    log.info(`exec->Splashtop: ${remoteTool}`, stdout)
-  })
-})
-
 app.on('before-quit', () => {
   ipcMain.removeAllListeners('closeAppToTray')
   ipcMain.removeAllListeners('appRestart')
-  ipcMain.removeAllListeners('openRemoteTool')
+  ipcMain.removeAllListeners('showMainWindows')
+  ipcMain.removeAllListeners('args')
 })
