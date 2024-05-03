@@ -1,16 +1,16 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header class="bg-grey-1">
-      <q-toolbar>
+    <q-header style="height: 30px" class="bg-grey-1">
+      <q-toolbar @click.self="handleTitleClick">
         <q-btn flat dense>
           <online-support width="20px" />
           <q-tooltip>
             online support
           </q-tooltip>
         </q-btn>
-        <q-btn  style="font-size: 0.5rem" class="text-grey-1 tripleClickButton" flat dense icon="menu" @click="handleClick" />
-        <q-toolbar-title style="font-size: 0.6rem" class="q-electron-drag text-grey-9">
-          dentaleyepad
+
+        <q-toolbar-title style="font-size: 0.8rem; padding: 0" class="q-electron-drag text-grey-9">
+         <span>dentaleyepad</span>
         </q-toolbar-title>
         <q-btn class="text-grey-9" style="font-size: 0.5rem" flat round dense @click="closeAppToTray()" icon="close" />
       </q-toolbar>
@@ -28,6 +28,15 @@
         </q-item-section>
         <q-item-section>
           <q-item-label>Test</q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-item v-if="updateIsAvailable" class="q-mt-sm" to="/update">
+        <q-item-section avatar>
+          <q-icon name="update" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>Update<br/> verfügbar</q-item-label>
         </q-item-section>
       </q-item>
 
@@ -78,29 +87,25 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 import log from 'electron-log'
 import { useI18n } from 'vue-i18n'
-import useTripleClick from '../compopsables/useTripleClick'
 import onlineSupport from 'src/assets/onlineSupport.vue'
-import { useRouter } from 'vue-router'
 
 defineOptions({
   name: 'MainLayout'
 })
 
-const { handleClick } = useTripleClick(toggleLeftDrawer)
-
 const devMode = ref(process.env.DEV)
 
-// #region UPDATE
-
-const router = useRouter()
+// #region UPDATE available
+const updateIsAvailable = ref(false)
 onMounted(() => {
-  window.pl.receive('update:show', (ev, data) => {
-    log.debug('MainLayout-> onMounted received update:show')
-    router.push('/update')
-  })
+  window.pl.getSettingValue('updateAvailable')
+    .then((isAvailable) => {
+      updateIsAvailable.value = isAvailable
+    })
+    .catch(err => log.error(err))
 })
 onUnmounted(() => {
-  window.pl.removeReceiveListener('update:show')
+
 })
 // #endregion
 
@@ -122,6 +127,13 @@ const closeAppToTray = () => {
 // #endregion
 
 // #region DRAWER
+const handleTitleClick = (event) => {
+  log.debug('handleCLick')
+  if (event.ctrlKey) {
+    log.debug('handleCLick event.ctrlKey')
+    toggleLeftDrawer()
+  }
+}
 const leftDrawerOpen = ref(false)
 
 function toggleLeftDrawer () {
