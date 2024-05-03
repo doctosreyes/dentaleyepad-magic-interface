@@ -53,9 +53,8 @@ export default function autoUpdate () {
   autoUpdater
     .checkForUpdates()
     .then(res => {
-      res = JSON.parse(res)
-      log.info('updateCheckandNotify - ', res)
-      sendStatusToWindow('updateCheckandNotify - ' + res)
+      const resString = JSON.stringify(res)
+      sendStatusToWindow('updateCheckandNotify - ' + resString)
     })
     .catch(err => log.error('autoupdate.js: ' + err))
 
