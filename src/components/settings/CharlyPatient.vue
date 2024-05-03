@@ -1,11 +1,11 @@
 <template>
   <div>
     <p class="relative-position text-subtitle1 text-bold">
-      <span style="width: 80%">Patient File</span>
+      <span style="width: 80%">{{ $t('components.settings.charly.title') }}</span>
       <q-toggle class="absolute-right" v-model="patientFile" color="primary" />
     </p>
     <p v-if="patientFile">
-      patientFilePath: {{ patientFilePath }}
+      <strong>{{ $t('file') }} - {{ $t('path') }}:</strong> {{ patientFilePath }}
     </p>
 
   </div>
