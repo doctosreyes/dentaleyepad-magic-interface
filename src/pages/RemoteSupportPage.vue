@@ -1,7 +1,7 @@
 <template>
-  <q-page padding>
+  <div>
     <doc-sos></doc-sos>
-  </q-page>
+  </div>
 </template>
 <script setup>
 import docSos from 'src/components/docSos.vue'

@@ -1,15 +1,9 @@
 <template>
-  <div>
-    <p class="relative-position text-h6">
-            {{ $t('remote.title') }}
-    </p>
-    <div style="width: 80%" class="text-body2">
-      {{ $t('remote.hint') }}
-    </div>
-    <div>
-      <q-btn class="q-pa-md q-mr-md q-mt-md button" @click="startRemote('TeamViewerQS.exe')">TeamViewer</q-btn>
-      <q-btn class="q-pa-md q-mt-md button" @click="startRemote('SplashtopSOS.exe')">SOS Splashtop</q-btn>
-    </div>
+  <div class="q-mt-lg flex flex-center">
+    <q-btn class="button" @click="startRemote('SplashtopSOS.exe')">SOS Splashtop</q-btn>
+    <q-btn class="button" @click="startRemote('TeamViewerQS.exe')">TeamViewer</q-btn>
+    <br/><br/>
+    <q-btn dense round @click="$router.push('/')" icon="chevron_left"></q-btn>
   </div>
 </template>
 

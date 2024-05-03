@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="q-ml-lg q-mt-sm">
+    <div>
       <QrCode></QrCode>
     </div>
   </div>
