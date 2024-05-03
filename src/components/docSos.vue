@@ -1,9 +1,11 @@
 <template>
+  <q-btn class="q-mt-sm q-ml-sm" dense flat @click="$router.push('/')" icon="chevron_left">
+    <q-tooltip>
+      Home
+    </q-tooltip></q-btn>
   <div class="q-mt-lg flex flex-center">
     <q-btn class="button" @click="startRemote('SplashtopSOS.exe')">SOS Splashtop</q-btn>
     <q-btn class="button" @click="startRemote('TeamViewerQS.exe')">TeamViewer</q-btn>
-    <br/><br/>
-    <q-btn dense round @click="$router.push('/')" icon="chevron_left"></q-btn>
   </div>
 </template>
 

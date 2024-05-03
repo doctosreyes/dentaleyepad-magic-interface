@@ -10,10 +10,24 @@
 import QrCode from 'src/components/QrCode.vue'
 import { onMounted, onUnmounted, ref } from 'vue'
 import log from 'electron-log'
+import { useRouter } from 'vue-router'
 
 defineOptions({
   name: 'IndexPage'
 })
+
+// #region UPDATE
+const router = useRouter()
+onMounted(() => {
+  window.pl.receive('update:show', (ev, data) => {
+    log.debug('MainLayout-> onMounted received update:show')
+    router.push('/update')
+  })
+})
+onUnmounted(() => {
+  window.pl.removeReceiveListener('update:show')
+})
+// #endregion
 
 const patientFileInterval = ref(null)
 const pathPatientFile = ref(null)
