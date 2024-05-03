@@ -7,6 +7,7 @@ const routes = [
       { path: 'input', component: () => import('pages/InputPage.vue') },
       { path: 'output', component: () => import('pages/OutputPage.vue') },
       { path: 'remoteSupport', component: () => import('pages/RemoteSupportPage.vue') },
+      { path: 'update', component: () => import('pages/UpdatePage.vue') },
       { path: 'tests', component: () => import('pages/TestsPage.vue') }
     ]
   },

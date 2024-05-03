@@ -75,11 +75,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import log from 'electron-log'
 import { useI18n } from 'vue-i18n'
 import useTripleClick from '../compopsables/useTripleClick'
 import onlineSupport from 'src/assets/onlineSupport.vue'
+import { useRouter } from 'vue-router'
 
 defineOptions({
   name: 'MainLayout'
@@ -88,6 +89,20 @@ defineOptions({
 const { handleClick } = useTripleClick(toggleLeftDrawer)
 
 const devMode = ref(process.env.DEV)
+
+// #region UPDATE
+
+const router = useRouter()
+onMounted(() => {
+  window.pl.receive('update:show', (ev, data) => {
+    log.debug('MainLayout-> onMounted received update:show')
+    router.push('/update')
+  })
+})
+onUnmounted(() => {
+  window.pl.removeReceiveListener('update:show')
+})
+// #endregion
 
 // #region LANGUAGE
 const { locale } = useI18n({ useScope: 'global' })
@@ -99,16 +114,20 @@ window.pl
   .catch((err) => log.error(err))
 // #endregion LANGUAGE
 
+// #region TRAY
 const closeAppToTray = () => {
   log.debug('closeAppToTray')
   window.pl.send('closeAppToTray')
 }
+// #endregion
 
+// #region DRAWER
 const leftDrawerOpen = ref(false)
 
 function toggleLeftDrawer () {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
+// #endregion
 </script>
 <style>
   .button {
