@@ -5,7 +5,7 @@
         <q-btn flat dense>
           <online-support width="20px" />
           <q-tooltip>
-            Some text as content of Tooltip
+            online support
           </q-tooltip>
         </q-btn>
         <q-btn  style="font-size: 0.5rem" class="text-grey-1 tripleClickButton" flat dense icon="menu" @click="handleClick" />
@@ -40,12 +40,21 @@
         </q-item-section>
       </q-item>
 
-      <q-item class="q-mt-sm" to="/settings">
+      <q-item class="q-mt-sm" to="/input">
         <q-item-section avatar>
-          <q-icon name="settings" />
+          <q-icon name="input" />
         </q-item-section>
         <q-item-section>
-          <q-item-label>Settings</q-item-label>
+          <q-item-label>Input</q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-item class="q-mt-sm" to="/output">
+        <q-item-section avatar>
+          <q-icon name="output" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>Output</q-item-label>
         </q-item-section>
       </q-item>
 
