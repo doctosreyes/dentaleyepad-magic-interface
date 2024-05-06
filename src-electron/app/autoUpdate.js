@@ -8,11 +8,6 @@ import constants from '../../constants.json'
 
 let note
 
-function sendStatusToWindow (text) {
-  log.info(text)
-  mainWindow.webContents.send('update:status', text)
-}
-
 app.on('before-quit', () => {
   ipcMain.removeAllListeners('update:check')
   ipcMain.removeAllListeners('update:make')
@@ -54,7 +49,7 @@ export default function autoUpdate () {
     .checkForUpdates()
     .then(res => {
       const resString = JSON.stringify(res)
-      sendStatusToWindow('updateCheckandNotify - ' + resString)
+      log.debug('updateCheckandNotify - ' + resString)
     })
     .catch(err => log.error('autoupdate.js: ' + err))
 
@@ -66,12 +61,12 @@ export default function autoUpdate () {
       mainWindow.show()
     })
     note.show()
-    sendStatusToWindow('update:available')
     AppSettings.setSync('updateAvailable', true)
   })
 
   autoUpdater.on('error', (ev, err) => {
-    sendStatusToWindow('Error in auto-updater.' + err)
+    log.error('Error in auto-updater.' + err)
+    mainWindow.webContents.send('update:error', err)
   })
 
   autoUpdater.on('download-progress', progressObj => {
@@ -84,11 +79,11 @@ export default function autoUpdate () {
       progressObj.total +
       ')'
     mainWindow.webContents.send('update:downloadProgress', progressObj.percent)
-    sendStatusToWindow(logMessage)
+    log.debug(logMessage)
   })
 
   autoUpdater.on('update-downloaded', (ev, info) => {
-    sendStatusToWindow('update-downloaded')
+    log.debug('update-downloaded')
     mainWindow.webContents.send('showUpdateInMenu')
     AppSettings.deleteSync('updateAvailable')
     process.env.PROD ? setTimeout(() => {
