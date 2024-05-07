@@ -12,12 +12,29 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import log from 'electron-log'
 import { useRouter } from 'vue-router'
 
+const router = useRouter()
+
 defineOptions({
   name: 'IndexPage'
 })
 
+// #region DccDirDialog
+onMounted(() => {
+  window.pl.getSettingValue('dccTargetDir')
+    .then((res) => {
+      log.debug(`IndexPage onMounted dccTargetDir : ${res}`)
+      if (res === '') {
+        router.push('/setDccTargetDir')
+        /* log.debug('open modal to select dcc target dir path')
+        const dialogObj = { title: 'Hinweis', message: 'Bitte zuerst Software wählen' }
+        const myDialog = new MyDialog(dialogObj)
+        log.debug(`dialog object: ${JSON.stringify(myDialog)}`) */
+      }
+    })
+    .catch(err => log.error(err))
+})
+
 // #region UPDATE
-const router = useRouter()
 onMounted(() => {
   window.pl.receive('update:show', (ev, data) => {
     log.debug('MainLayout-> onMounted received update:show')
