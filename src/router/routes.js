@@ -1,14 +1,41 @@
+const bounds = { width: 500, height: 300 }
+const qrCodeBounds = { width: 150, height: 210 }
 const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/IndexPage.vue') },
-      { path: 'input', component: () => import('pages/InputPage.vue') },
-      { path: 'output', component: () => import('pages/OutputPage.vue') },
+      {
+        path: '',
+        component: () => import('pages/IndexPage.vue'),
+        beforeEnter: (to, from) => {
+          window.pl.send('setBounds', qrCodeBounds)
+        }
+      },
       { path: 'remoteSupport', component: () => import('pages/RemoteSupportPage.vue') },
       { path: 'update', component: () => import('pages/UpdatePage.vue') },
-      { path: 'tests', component: () => import('pages/TestsPage.vue') }
+      {
+        path: 'input',
+        component: () => import('pages/InputPage.vue'),
+        beforeEnter: (to, from) => {
+          window.pl.send('setBounds', bounds)
+        }
+      },
+      {
+        path: 'output',
+        component: () => import('pages/OutputPage.vue'),
+        beforeEnter: (to, from) => {
+          window.pl.send('setBounds', bounds)
+        }
+      },
+      { path: 'tests', component: () => import('pages/TestsPage.vue') },
+      {
+        path: 'setDccTargetDir',
+        component: () => import('pages/SetDccTargetDirPage.vue'),
+        beforeEnter: (to, from) => {
+          window.pl.send('setBounds', bounds)
+        }
+      }
     ]
   },
 
