@@ -1,0 +1,100 @@
+<template>
+  <div class="flex flex-center">
+    <div class="column">
+      <div class="row">
+        <q-btn class="q-ml-sm" @click="selectDccDirPath">Wähle hier das "Zielverzeichnis", welches im dentaleyepad-control-center eingestelt ist</q-btn>
+      </div>
+      <div class="row">
+        {{ dccTargetDirPath }}
+      </div>
+      <div v-if="readError" class="row text-negative">
+        <p>
+          {{ readError }}
+        </p>
+      </div>
+      <div v-else>
+        {{ dccSettings }}
+      </div>
+    </div>
+  </div>
+</template>
+<script setup>
+import log from 'electron-log'
+import useSelectPath from '../../compopsables/useSelectPath.js'
+import { ref, onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
+// import axios from 'axios'
+
+const router = useRouter()
+const { selectPath, selectedPath } = useSelectPath()
+const dccTargetDirPath = ref(undefined)
+const readError = ref(false)
+const dccSettings = ref(null)
+
+onMounted(() => {
+  window.pl.getSettingValue('dccTargetDir')
+    .then((res) => {
+      dccTargetDirPath.value = res
+    }).catch(err => log.error(err))
+})
+
+const selectDccDirPath = () => {
+  log.debug('selectDccDirPath')
+  dccTargetDirPath.value = ''
+  readError.value = false
+  selectPath({ properties: ['openDirectory'] })
+  log.debug(`selectedPath: ${selectedPath.value}`)
+}
+
+watch(selectedPath, (filePaths) => {
+  log.debug(`DccDirPath -> changed selectedPath: ${JSON.stringify(selectedPath.value)}, filePaths: ${JSON.stringify(filePaths)}`)
+  dccTargetDirPath.value = filePaths[0]
+  _readDccDataFile()
+})
+
+function _readDccDataFile () {
+  const dccDataFilePath = dccTargetDirPath.value + '/patserverData.json'
+  window.pl.fsReadFile(dccDataFilePath, 'utf-8', (err, data) => {
+    if (err) {
+      log.error(err)
+      readError.value = err
+    } else {
+      log.debug(`dccSettings: ${data}`)
+      dccSettings.value = JSON.parse(data)
+      log.debug(`DccTargetDir _readDccDataFile dccSettings.ips.length: ${dccSettings.value.ips.length}`)
+      if (dccSettings.value.ips.length > 0) {
+        _checkDccConnection()
+      }
+    }
+  })
+}
+
+function _checkDccConnection () {
+  if (typeof dccSettings.value.connector !== 'undefined' && dccSettings.value.connector !== '') {
+    window.pl.send('settingSet', { key: 'connector', value: dccSettings.value.connector })
+  } else {
+    readError.value += 'ERROR: connnector could not been set - call doctorseyes support'
+    return
+  }
+  window.pl.send('settingSet', { key: 'dccTargetDir', value: dccTargetDirPath.value })
+  router.push('/')
+  /* const test = true
+  const ips = dccSettings.value.ips
+  const port = dccSettings.value.port
+  ips.forEach(ip => {
+    log.debug('_checkDccConnection ip:', ip)
+    const dccAdress = `http://${ip}:${port}/check` // TODO set CSP "connect-src" in index.html --- ALSO -> set cors in dcc
+    log.debug('_checkDccConnection dccAdress:', dccAdress)
+    axios({
+      method: 'get',
+      url: dccAdress
+    })
+      .then((res) => {
+        log.debug(`SUCCESS axios get ${dccAdress} response: ${res}`)
+      })
+      .catch((err) => {
+        readError.value += `\n${dccAdress} error:\n${err}`
+      })
+  }) */
+}
+</script>
