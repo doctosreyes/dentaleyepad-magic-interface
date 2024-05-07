@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page padding>
     <set-connectors></set-connectors>
   </q-page>
 </template>
