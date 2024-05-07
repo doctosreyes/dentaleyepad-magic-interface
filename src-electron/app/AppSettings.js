@@ -7,6 +7,7 @@ const settings = {
   programDataPath: path.resolve(process.env.ProgramData || 'C:\\ProgramData', typeof remote === 'undefined' ? app.getName() : remote.app.getName()),
   pathOfApp: typeof remote === 'undefined' ? path.resolve(app.getAppPath()) : path.resolve(remote.app.getAppPath()),
   appSettingsPath: null,
+  dccTargetDir: '',
   paths: {},
   port: 9701,
 
