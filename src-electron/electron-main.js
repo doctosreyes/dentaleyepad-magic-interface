@@ -3,6 +3,7 @@ import os from 'os'
 import { initSettings, createTray, createWindow, mainWindow } from './app-when-ready'
 import log from 'electron-log'
 import path from 'path'
+import settings from './app/AppSettings'
 
 log.initialize()
 log.info('process.env.DEV: ', process.env.DEV)
@@ -30,6 +31,15 @@ if (!gotTheLock) {
   })
 
   app.on('window-all-closed', () => {
+    log.debug('app on window-all-closed')
+    if (settings.hasSync('patientFileInterval')) {
+      settings.get('patientFileInterval')
+        .then(res => {
+          log.info(`app on window-all-closed: ${res}`)
+          clearInterval(res)
+          settings.deleteSync('patientFileInterval')
+        }).catch(err => log.error(err))
+    }
     if (platform !== 'darwin') {
       app.quit()
     }

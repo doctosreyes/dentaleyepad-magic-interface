@@ -1,6 +1,6 @@
 import { BrowserWindow, nativeImage, Tray, Menu, app } from 'electron'
 import path from 'path'
-import { trayTranslations, toggleMainWindow } from './main-functions'
+import { trayTranslations, toggleMainWindow, checkConnector } from './main-functions'
 import { iconPath } from './electron-main'
 import constants from '../constants.json'
 import log from 'electron-log'
@@ -21,6 +21,7 @@ function initSettings () {
     settings.setSync('language', language)
     log.debug(`language set to: ${language}`)
   }
+  checkConnector()
 }
 
 function createWindow () {

@@ -8,14 +8,16 @@ const settings = {
   pathOfApp: typeof remote === 'undefined' ? path.resolve(app.getAppPath()) : path.resolve(remote.app.getAppPath()),
   appSettingsPath: null,
   dccTargetDir: '',
-  paths: {},
+  paths: {
+
+  },
   port: 9701,
 
   initOrResetAllAppSettings () {
     log.debug('initOrResetAllAppSettings')
-
     settings.paths = {
-      programData: this.programDataPath
+      programData: this.programDataPath,
+      xnview: 'C:\\Program Files\\XnViewMP\\xnviewmp.exe'
     }
 
     this.writeSettingsFile()
@@ -116,6 +118,39 @@ const settings = {
 
     this.writeSettingsFile()
     log.debug(`AppSettings -> ${key} is set`)
+  },
+
+  set (key, value) {
+    return new Promise((resolve, reject) => {
+      log.debug(`AppSettings -> set key: ${key}, value: ${value}`)
+      // Split the key into parts
+      const keys = key.split('.')
+
+      // Get the last key
+      const lastKey = keys.pop()
+
+      // Traverse the settings object based on the key parts
+      let obj = this
+      for (const k of keys) {
+        obj[k] = obj[k] || {}
+        obj = obj[k]
+      }
+
+      // If the last key already exists and is an object, merge the new value with it
+      if (Object.prototype.hasOwnProperty.call(obj, lastKey) && typeof obj[lastKey] === 'object' && typeof value === 'object') {
+        Object.assign(obj[lastKey], value)
+      } else {
+        // Otherwise, set the value at the last key
+        obj[lastKey] = value
+      }
+      try {
+        this.writeSettingsFile()
+        log.debug(`AppSettings -> ${key} is set`)
+        resolve(true)
+      } catch (error) {
+        reject(error)
+      }
+    })
   },
 
   get (key) {

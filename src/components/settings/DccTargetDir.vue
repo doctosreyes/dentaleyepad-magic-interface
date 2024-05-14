@@ -12,9 +12,19 @@
           {{ readError }}
         </p>
       </div>
-      <div v-else>
+      <div v-if="warning" class="row text-warning">
+        <p>
+          {{ warning }}
+        </p>
+      </div>
+      <div>
         {{ dccSettings }}
       </div>
+      <q-btn v-if="showHomeBtn" dense flat @click="$router.push('/')" icon="chevron_left">
+      <q-tooltip>
+        Home
+      </q-tooltip>
+    </q-btn>
     </div>
   </div>
 </template>
@@ -22,14 +32,14 @@
 import log from 'electron-log'
 import useSelectPath from '../../compopsables/useSelectPath.js'
 import { ref, onMounted, watch } from 'vue'
-import { useRouter } from 'vue-router'
 // import axios from 'axios'
 
-const router = useRouter()
 const { selectPath, selectedPath } = useSelectPath()
 const dccTargetDirPath = ref(undefined)
 const readError = ref(false)
 const dccSettings = ref(null)
+const warning = ref(false)
+const showHomeBtn = ref(false)
 
 onMounted(() => {
   window.pl.getSettingValue('dccTargetDir')
@@ -53,7 +63,7 @@ watch(selectedPath, (filePaths) => {
 })
 
 function _readDccDataFile () {
-  const dccDataFilePath = dccTargetDirPath.value + '/patserverData.json'
+  const dccDataFilePath = dccTargetDirPath.value + '/DccData.json'
   window.pl.fsReadFile(dccDataFilePath, 'utf-8', (err, data) => {
     if (err) {
       log.error(err)
@@ -70,14 +80,25 @@ function _readDccDataFile () {
 }
 
 function _checkDccConnection () {
+  if (typeof dccSettings.value.output !== 'undefined' && dccSettings.value.output !== '') {
+    window.pl.send('settingSet', { key: 'output', value: dccSettings.value.output })
+    // window.pl.send('settingSet', { key: 'ouput', value: dccSettings.value.connector })
+  } else {
+    readError.value += 'ERROR: output could not been set - call doctorseyes support'
+  }
   if (typeof dccSettings.value.connector !== 'undefined' && dccSettings.value.connector !== '') {
     window.pl.send('settingSet', { key: 'connector', value: dccSettings.value.connector })
+    // window.pl.send('settingSet', { key: 'ouput', value: dccSettings.value.connector })
   } else {
     readError.value += 'ERROR: connnector could not been set - call doctorseyes support'
-    return
+  }
+  if (typeof dccSettings.value.patManRoot !== 'undefined' && dccSettings.value.patManRoot !== '') {
+    window.pl.send('settingSet', { key: 'dccMediaManagement', value: dccSettings.value.patManRoot })
+  } else {
+    warning.value = 'WARNING: DCC has no media-mangager-directory for use with XnView'
   }
   window.pl.send('settingSet', { key: 'dccTargetDir', value: dccTargetDirPath.value })
-  router.push('/')
+  showHomeBtn.value = true
   /* const test = true
   const ips = dccSettings.value.ips
   const port = dccSettings.value.port

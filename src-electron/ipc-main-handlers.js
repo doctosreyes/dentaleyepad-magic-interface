@@ -16,6 +16,7 @@ ipcMain.on('setBounds', (ev, data) => {
 
 ipcMain.on('showMainWindow', () => {
   mainWindow.show()
+  mainWindow.focus()
 })
 
 ipcMain.on('appRestart', async () => {

@@ -1,8 +1,8 @@
 <template>
   <q-page padding>
-    <set-connectors></set-connectors>
+    <set-dcc-output></set-dcc-output>
   </q-page>
 </template>
 <script setup>
-import SetConnectors from 'src/components/settings/SetConnectors.vue'
+import SetDccOutput from 'src/components/settings/SetDccOutput.vue'
 </script>

@@ -62,7 +62,6 @@ onMounted(() => {
     } else {
       qr.value = process.env.PROD ? args[2] : args[4]
     }
-    window.pl.send('showMainWindow')
   })
 })
 
