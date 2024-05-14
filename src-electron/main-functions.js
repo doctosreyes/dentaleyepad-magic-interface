@@ -2,7 +2,7 @@ import settings from 'app/src-electron/app/AppSettings'
 import { mainWindow } from './app-when-ready'
 import constants from '../constants.json'
 import log from 'electron-log'
-import { stat, readFileSync } from 'fs'
+import { stat, readFile } from 'fs'
 import path from 'path'
 import { app } from 'electron'
 
@@ -76,18 +76,26 @@ function _readPatientFile (pathPatientFile) {
     if (err) {
       if (err.code !== 'ENOENT') log.error('readPatientFile: ' + err)
     } else {
-      const patientFileData = settings.getSync('patientFileData')
-      const fileTime = stats.ctime
-      log.debug('types patientFileTime: ' + typeof patientFileData + ' fileTime: ' + typeof fileTime)
-      log.debug(`TIMES: ${patientFileData.toString()} / ${fileTime.toString()}`)
-      if (patientFileData.toString() !== fileTime.toString()) {
-        log.debug('Charly PatientFile has changed')
-        settings.setSync('patientFileData', fileTime.toString())
-        const data = readFileSync(pathPatientFile, 'latin1')
-        mainWindow.show()
-        mainWindow.focus()
-        mainWindow.webContents.send('args', process.env.DEV ? data : data)
-      }
+      settings.get('patientFileData')
+        .then((patientFileData) => {
+          const fileTime = stats.ctime
+          // log.debug('types patientFileTime: ' + typeof patientFileData + ' fileTime: ' + typeof fileTime)
+          // log.debug(`TIMES: ${patientFileData} / ${fileTime.toString()}`)
+          if (patientFileData !== fileTime.toString()) {
+            log.debug('Charly PatientFile has changed')
+            settings.set('patientFileData', fileTime.toString()).catch(err => log.error(err))
+            readFile(pathPatientFile, 'latin1', (err, data) => {
+              if (err) {
+                log.error(err)
+              } else {
+                mainWindow.show()
+                mainWindow.focus()
+                mainWindow.webContents.send('args', process.env.DEV ? data : data)
+              }
+            })
+          }
+        })
+        .catch(err => log.error(err))
     }
   })
 }
