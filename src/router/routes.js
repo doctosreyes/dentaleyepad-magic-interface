@@ -1,5 +1,5 @@
 const bounds = { width: 500, height: 300 }
-const qrCodeBounds = { width: 150, height: 210 }
+const qrCodeBounds = { width: 154, height: 260 }
 const routes = [
   {
     path: '/',
