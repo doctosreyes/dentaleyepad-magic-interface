@@ -66,6 +66,7 @@ ipcMain.on('startRomexisLoaderBat', (ev) => {
             log.error(`Error opening shortcut: ${response}`)
           } else {
             log.debug(`${loaderPath} opened successfully.`)
+            mainWindow.hide()
           }
         })
     })
