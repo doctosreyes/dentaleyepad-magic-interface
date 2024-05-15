@@ -1,34 +1,26 @@
 <template>
   <div>
     <div>
-      <QrCode></QrCode>
-      <RomexisLoaderButton v-if="outputIsRomexis"></RomexisLoaderButton>
+      <QrCode />
+      <OutputButton class="q-mt-sm" />
     </div>
   </div>
 </template>
 
 <script setup>
 import QrCode from 'src/components/QrCode.vue'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
 import log from 'electron-log'
 import { useRouter } from 'vue-router'
-import RomexisLoaderButton from 'src/components/buttons/RomexisLoaderButton.vue'
+import OutputButton from 'src/components/buttons/OutputButton.vue'
 
 defineOptions({
   name: 'IndexPage'
 })
 
-const outputIsRomexis = ref(false)
-
 const router = useRouter()
 // #region DccDirDialog
 onMounted(() => {
-  window.pl.getSettingValue('output.software')
-    .then((res) => {
-      log.debug(`outputIsRomexis: ${res}`)
-      if (res === 'Romexis') { outputIsRomexis.value = true }
-    })
-    .catch(err => log.error(err))
   window.pl.getSettingValue('dccTargetDir')
     .then((res) => {
       log.debug(`IndexPage onMounted dccTargetDir : ${res}`)
