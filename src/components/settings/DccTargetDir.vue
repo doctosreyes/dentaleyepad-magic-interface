@@ -81,10 +81,7 @@ function _readDccDataFile () {
 
 function _checkDccConnection () {
   if (typeof dccSettings.value.output !== 'undefined' && dccSettings.value.output !== '') {
-    window.pl.send('settingSet', { key: 'output', value: {} })
-    window.pl.send('settingSet', { key: 'output.software', value: dccSettings.value.output.software })
-    window.pl.send('settingSet', { key: 'output.user', value: dccSettings.value.output.user })
-    window.pl.send('settingSet', { key: 'output.password', value: dccSettings.value.output.password })
+    window.pl.send('settingSet', { key: 'output', value: dccSettings.value.output })
   } else {
     readError.value += 'ERROR: output could not been set - call doctorseyes support'
   }

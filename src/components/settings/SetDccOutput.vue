@@ -11,15 +11,15 @@ const output = ref(null)
 const outputOptions = ['XnView MP (Standard)', 'Sidexis', 'Romexis', 'dentaleyepad media manager']
 
 window.pl
-  .getSettingValue('output.software')
+  .getSettingValue('output')
   .then((result) => (output.value = result))
   .catch((err) => log.error(err))
 
 watch(output, (val) => {
-  window.pl.getSettingValue('output.software')
+  window.pl.getSettingValue('output')
     .then((result) => {
       if (result !== val) {
-        window.pl.send('settingSet', { key: 'output.software', value: val })
+        window.pl.send('settingSet', { key: 'output', value: val })
         if (process.env.DEV) {
           log.debug('patient-grabber RESTART')
           return
