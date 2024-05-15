@@ -1,9 +1,11 @@
 import { mainWindow, appTray } from './app-when-ready'
-import { ipcMain, app, dialog } from 'electron'
+import { ipcMain, app, dialog, shell } from 'electron'
 import log from 'electron-log/main'
 import constants from '../constants.json'
 import { trayTranslations, delay } from './main-functions'
 import { iconPath } from './electron-main'
+import path from 'path'
+import settings from './app/AppSettings'
 
 ipcMain.on('args', (ev, data) => {
   mainWindow.webContents.send('args', data)
@@ -54,7 +56,23 @@ ipcMain.on('showOpenDialog', (ev, options) => {
     .catch(err => log.error(err))
 })
 
+ipcMain.on('startRomexisLoaderBat', (ev) => {
+  settings.get('dccTargetDir')
+    .then((res) => {
+      const loaderPath = path.join(res, 'Romexis', 'romexisLoader.bat')
+      shell.openPath(loaderPath)
+        .then((response) => {
+          if (response) {
+            log.error(`Error opening shortcut: ${response}`)
+          } else {
+            log.debug(`${loaderPath} opened successfully.`)
+          }
+        })
+    })
+})
+
 app.on('before-quit', () => {
+  ipcMain.removeAllListeners('startRomexisLoaderBat')
   ipcMain.removeAllListeners('closeAppToTray')
   ipcMain.removeAllListeners('appRestart')
   ipcMain.removeAllListeners('showMainWindows')
