@@ -76,26 +76,35 @@ function _readPatientFile (pathPatientFile) {
     if (err) {
       if (err.code !== 'ENOENT') log.error('readPatientFile: ' + err)
     } else {
-      settings.get('patientFileData')
-        .then((patientFileData) => {
-          const fileTime = stats.ctime
-          // log.debug('types patientFileTime: ' + typeof patientFileData + ' fileTime: ' + typeof fileTime)
-          // log.debug(`TIMES: ${patientFileData} / ${fileTime.toString()}`)
-          if (patientFileData !== fileTime.toString()) {
-            log.debug('Charly PatientFile has changed')
-            settings.set('patientFileData', fileTime.toString()).catch(err => log.error(err))
-            readFile(pathPatientFile, 'latin1', (err, data) => {
-              if (err) {
-                log.error(err)
-              } else {
-                mainWindow.show()
-                mainWindow.focus()
-                mainWindow.webContents.send('args', process.env.DEV ? data : data)
-              }
-            })
+      settings.has('patientFileData')
+        .then((res) => {
+          if (res) {
+            settings.get('patientFileData')
+              .then((patientFileData) => {
+                const fileTime = stats.ctime
+                // log.debug('types patientFileTime: ' + typeof patientFileData + ' fileTime: ' + typeof fileTime)
+                log.debug(`TIMES: ${patientFileData} / ${fileTime.toString()}`)
+                if (patientFileData !== fileTime.toString()) {
+                  log.debug('Charly PatientFile has changed')
+                  settings.set('patientFileData', fileTime.toString()).catch(err => log.error(err))
+                  readFile(pathPatientFile, 'latin1', (err, data) => {
+                    if (err) {
+                      log.error(err)
+                    } else {
+                      mainWindow.show()
+                      mainWindow.focus()
+                      mainWindow.webContents.send('args', process.env.DEV ? data : data)
+                    }
+                  })
+                }
+              })
+              .catch(err => log.error(err))
+          } else {
+            const dateTime = new Date().toString()
+            settings.set('patientFileData', dateTime)
+              .then(() => { _readPatientFile() })
           }
         })
-        .catch(err => log.error(err))
     }
   })
 }
