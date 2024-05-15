@@ -7,6 +7,11 @@ export default {
         title: 'Solutio Charly - Datei Input',
         hint: ''
       }
+    },
+    buttons: {
+      romexis: {
+        label: 'Romexis Import starten'
+      }
     }
   }
 }
