@@ -12,8 +12,27 @@ const routes = [
           window.pl.send('setBounds', qrCodeBounds)
         }
       },
-      { path: 'remoteSupport', component: () => import('pages/RemoteSupportPage.vue') },
-      { path: 'update', component: () => import('pages/UpdatePage.vue') },
+      {
+        path: 'remoteSupport',
+        component: () => import('pages/RemoteSupportPage.vue'),
+        beforeEnter: (to, from) => {
+          window.pl.send('setBounds', qrCodeBounds)
+        }
+      },
+      {
+        path: 'update',
+        component: () => import('pages/UpdatePage.vue'),
+        beforeEnter: (to, from) => {
+          window.pl.send('setBounds', qrCodeBounds)
+        }
+      },
+      {
+        path: 'settings',
+        component: () => import('pages/SettingsPage.vue'),
+        beforeEnter: (to, from) => {
+          window.pl.send('setBounds', bounds)
+        }
+      },
       {
         path: 'input',
         component: () => import('pages/InputPage.vue'),

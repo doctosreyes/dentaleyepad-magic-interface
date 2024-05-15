@@ -21,6 +21,7 @@ function initSettings () {
     settings.setSync('language', language)
     log.debug(`language set to: ${language}`)
   }
+  setAutoLaunch()
   checkConnector()
 }
 
@@ -84,6 +85,47 @@ function createTray () {
   appTray.addListener('right-click', () => {
     appTray.popUpContextMenu()
   })
+}
+
+async function setAutoLaunch () {
+  log.info('autoLaunch main ready')
+  const AutoLaunch = require('auto-launch')
+  const dpgAutoLauncher = new AutoLaunch({ name: constants.app.title })
+  let autoLaunch
+  try {
+    const settingsHasAutoLaunch = await settings.has('autoLaunch')
+    const autoLaunchIsEnabled = await dpgAutoLauncher.isEnabled()
+    if (settingsHasAutoLaunch) {
+      autoLaunch = await settings.get('autoLaunch')
+      if (!autoLaunch) {
+        // autoLaunch === false
+        log.debug(`setting of autoLaunch = ${autoLaunch}`)
+        if (autoLaunchIsEnabled) {
+          log.debug(`dpgAutoLauncher.isEnabled(): ${autoLaunchIsEnabled}`)
+          dpgAutoLauncher.disable()
+          log.debug('dpgAutoLauncher.disabled')
+        }
+      } else {
+        if (!autoLaunchIsEnabled) await dpgAutoLauncher.enable()
+      }
+    } else {
+      // set to TRUE at first install
+      log.info('autoLaunch not set - set setting to true')
+      try {
+        await dpgAutoLauncher.enable()
+        await settings.set('autoLaunch', true)
+      } catch (error) {
+        log.error(error)
+        throw Error(error)
+      }
+    }
+    dpgAutoLauncher
+      .isEnabled()
+      .then((res) => log.debug(`autoLaunch enable: ${res}`))
+  } catch (error) {
+    log.error(error)
+    throw Error(error)
+  }
 }
 
 export { initSettings, createWindow, mainWindow, createTray, appTray }
