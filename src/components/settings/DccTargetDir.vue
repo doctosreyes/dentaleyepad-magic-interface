@@ -87,6 +87,16 @@ function _checkDccConnection () {
   }
   if (typeof dccSettings.value.connector !== 'undefined' && dccSettings.value.connector !== '') {
     window.pl.send('settingSet', { key: 'connector', value: dccSettings.value.connector })
+    if (dccSettings.value.connector === 'charly') { // CONNECTOR === CHARLY
+      window.pl.send('settingSet', { key: 'patientFile', value: true })
+      if (process.env.DEV) {
+        log.debug('patmanager RESTART')
+        return
+      }
+      window.pl.send('app:relaunch')
+    } else {
+      window.pl.send('settingSet', { key: 'patientFile', value: false })
+    }
     // window.pl.send('settingSet', { key: 'ouput', value: dccSettings.value.connector })
   } else {
     readError.value += 'ERROR: connnector could not been set - call doctorseyes support'
