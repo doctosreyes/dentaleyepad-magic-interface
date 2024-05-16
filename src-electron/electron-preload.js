@@ -6,6 +6,10 @@ contextBridge.exposeInMainWorld('pl', {
   processPlatform: process.platform,
   fsStat: fs.stat,
   fsReadFile: fs.readFile,
+  invoke: (channel, data) => {
+    log.debug(`preload send invoke: ${channel} ${JSON.stringify(data)}`)
+    return ipcRenderer.invoke(channel, data)
+  },
   send: (channel, data) => {
     log.debug(`preload send: ${channel} ${JSON.stringify(data)}`)
     ipcRenderer.send(channel, data)
@@ -34,5 +38,6 @@ contextBridge.exposeInMainWorld('pl', {
       log.error('Fehler beim Abrufen des Werts', error)
       throw error // Fehler weitergeben, um ihn in Ihrer QrCode.vue-Datei zu behandeln
     }
-  }
+  },
+  executeCmd: (cmd) => ipcRenderer.invoke('executeCmd', cmd)
 })

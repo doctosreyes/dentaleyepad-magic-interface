@@ -72,6 +72,25 @@ ipcMain.on('startRomexisLoaderBat', (ev) => {
     })
 })
 
+ipcMain.handle('executeCmd', async (ev, cmd) => {
+  const { exec } = require('child_process')
+  return new Promise((resolve, reject) => {
+    exec(cmd, (err, stdout, stderr) => {
+      if (err) {
+        reject({ error: err.message, stderr })
+      } else {
+        resolve(stdout)
+      }
+    })
+  })
+})
+
+ipcMain.on('checkDirAndMake', (ev, dir) => {
+  mainWindow.setAlwaysOnTop(true)
+  log.debug(`AppSettings checkDirAndMake ${dir}`)
+  return settings.checkDirAndMake(dir)
+})
+
 app.on('before-quit', () => {
   ipcMain.removeAllListeners('startRomexisLoaderBat')
   ipcMain.removeAllListeners('closeAppToTray')

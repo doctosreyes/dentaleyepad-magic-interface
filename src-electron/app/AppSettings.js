@@ -204,6 +204,19 @@ const settings = {
     } catch (error) {
       log.error(`Error at writing AppSettings file:\n${error}`)
     }
+  },
+  checkDirAndMake (dirPath) {
+    const pathExists = fs.existsSync(dirPath)
+    if (!pathExists) { // path does not exist
+      log.debug(`${dirPath} NOT EXISTS`)
+      // make path
+      try {
+        fs.mkdirSync(dirPath)
+        log.debug(`${dirPath} EXISTS`)
+      } catch (error) {
+        log.error(error)
+      }
+    }
   }
 } // #endregion SETTINGS OBJECT
 
@@ -234,7 +247,6 @@ ipcMain.on('settingSet', async (ev, data) => {
   settings.setSync(`${data.key}`, data.value)
   log.debug(`settings.set key: ${data.key}, value: ${data.value}`)
 })
-
 // #endregion
 
 settings.appSettingsPath = path.join(settings.programDataPath, 'AppSettings.json')
