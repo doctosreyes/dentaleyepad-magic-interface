@@ -1,11 +1,11 @@
 <template>
+  <div :key="qr" id="qr">
+    <div class="" v-html="generateQrCode"></div>
+  </div>
   <div v-if="qrNotEmpty">
     <div class="q-pl-md q-pt-sm" id="qrData">
       {{ qrArray[2] }}, {{ qrArray[3] }}
     </div>
-  </div>
-  <div :key="qr" id="qr">
-    <div class="" v-html="generateQrCode"></div>
   </div>
 </template>
 <script setup>
