@@ -36,14 +36,14 @@ watch(patientFile, (val) => {
     .then((result) => {
       if (result !== val && val === true) {
         window.pl.send('settingSet', { key: 'patientFile', value: val })
-        if (process.env.DEV) {
-          log.debug('patmanager RESTART')
-          return
-        }
-        window.pl.send('app:relaunch')
       } else if (result !== val && val === false) {
         window.pl.send('settingSet', { key: 'patientFile', value: val })
       }
+      if (process.env.DEV) {
+        log.debug('patmanager RESTART')
+        return
+      }
+      window.pl.send('app:relaunch')
     })
     .catch(err => log.error(err))
 })
