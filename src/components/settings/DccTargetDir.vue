@@ -59,6 +59,7 @@ const selectDccDirPath = () => {
 watch(selectedPath, (filePaths) => {
   log.debug(`DccDirPath -> changed selectedPath: ${JSON.stringify(selectedPath.value)}, filePaths: ${JSON.stringify(filePaths)}`)
   dccTargetDirPath.value = filePaths[0]
+  if (typeof dccTargetDirPath.value !== 'undefined') window.pl.send('settingSet', { key: 'dccTargetDir', value: dccTargetDirPath.value })
   _readDccDataFile()
 })
 
@@ -92,8 +93,9 @@ function _checkDccConnection () {
       if (process.env.DEV) {
         log.debug('patmanager RESTART')
         return
+      } else {
+        window.pl.send('app:relaunch')
       }
-      window.pl.send('app:relaunch')
     } else {
       window.pl.send('settingSet', { key: 'patientFile', value: false })
     }
