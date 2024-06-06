@@ -93,6 +93,14 @@ function _readPatientFile (pathPatientFile) {
                     } else {
                       mainWindow.show()
                       mainWindow.focus()
+                      data = data.split('|')
+                      let birthDay = data[4]
+                      if (birthDay.indexOf('.') > -1) {
+                        const birthArr = birthDay.split('.')
+                        birthDay = `${birthArr[2]}${birthArr[1]}${birthArr[0]}`
+                      }
+                      data = `${data[0]}|${data[1]}|${data[2]}|${data[3]}|${birthDay}`
+                      log.debug(`BIRTHDAY: ${birthDay}`)
                       mainWindow.webContents.send('args', process.env.DEV ? data : data)
                     }
                   })
