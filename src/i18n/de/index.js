@@ -3,6 +3,10 @@ import { dpg } from '../en-US/index'
 export default {
   path: 'Pfad',
   file: 'Datei',
+  tooltips: {
+    settings: 'Einstellungen',
+    update: 'Ein Update ist verfügbar'
+  },
   components: {
     settings: {
       dccTargetDir: {

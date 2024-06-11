@@ -4,6 +4,10 @@ export const dpg = `${dep}-magic-interface`
 export default {
   path: 'path',
   file: 'file',
+  tooltips: {
+    settings: 'Settings',
+    update: 'Update is available'
+  },
   components: {
     settings: {
       dccTargetDir: {
