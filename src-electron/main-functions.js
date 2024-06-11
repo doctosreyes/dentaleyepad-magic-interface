@@ -21,7 +21,7 @@ function trayTranslations () {
   switch (language) {
     case 'de':
       content = 'Die Anwendung läuft im Tray weiter'
-      label = 'dentaleyepad-patient-grabber beenden'
+      label = `${constants.app.title} beenden`
       break
 
     default:
