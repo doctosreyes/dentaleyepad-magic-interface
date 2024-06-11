@@ -1,6 +1,6 @@
 import { app } from 'electron'
 import os from 'os'
-import { initSettings, createTray, createWindow, mainWindow } from './app-when-ready'
+import { initSettings, createTray, createWindow, mainWindow, activateOcrScan } from './app-when-ready'
 import log from 'electron-log'
 import path from 'path'
 import settings from './app/AppSettings'
@@ -28,6 +28,7 @@ if (!gotTheLock) {
     initSettings()
     createWindow()
     createTray()
+    activateOcrScan()
   })
 
   app.on('window-all-closed', () => {

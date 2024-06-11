@@ -6,10 +6,22 @@ import constants from '../constants.json'
 import log from 'electron-log'
 import settings from 'app/src-electron/app/AppSettings'
 import autoUpdate from './app/autoUpdate'
+import OcrScan from './app/ocrScan'
 
 let mainWindow, appTray
 
 autoUpdate()
+
+// #region OCR
+function activateOcrScan () {
+  const ocrScan = new OcrScan()
+  ocrScan.registerGlobalShortcut()
+  ocrScan.listenToScreenshotCaptured()
+  ocrScan.listenToReloadOcrSettings()
+  log.debug(`OCR Scan active: ${ocrScan.patientString}`)
+}
+
+// #endregion OCR
 
 function initSettings () {
   let language
@@ -137,4 +149,4 @@ async function setAutoLaunch () {
   }
 }
 
-export { initSettings, createWindow, mainWindow, createTray, appTray }
+export { initSettings, createWindow, mainWindow, createTray, appTray, activateOcrScan }
