@@ -108,8 +108,6 @@ function _checkDccConnection () {
   }
   if (typeof dccSettings.value.patManRoot !== 'undefined' && dccSettings.value.patManRoot !== '') {
     window.pl.send('settingSet', { key: 'dccMediaManagement', value: dccSettings.value.patManRoot })
-  } else {
-    warning.value = 'WARNING: DCC has no media-mangager-directory for use with XnView'
   }
   window.pl.send('settingSet', { key: 'dccTargetDir', value: dccTargetDirPath.value })
   showHomeBtn.value = true
