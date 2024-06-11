@@ -5,20 +5,20 @@ export default {
   file: 'Datei',
   tooltips: {
     settings: 'Einstellungen',
-    update: 'Ein Update ist verfügbar'
+    update: 'Ein Update ist verfügbar.'
   },
   components: {
     settings: {
       dccTargetDir: {
-        btn: 'Wähle hier das "Zielverzeichnis", welches im dentaleyepad-control-center eingestellt ist'
+        btn: 'Wähle hier das "Zielverzeichnis", welches im dentaleyepad-control-center eingestellt ist.'
       },
       charly: {
         title: 'Solutio Charly - Datei Input',
         hint: ''
       },
       autostart: {
-        title: 'Bei Start von Windows ausführen',
-        label: `Wenn diese Option aktiv ist, wird das ${dpg} bei jedem Start des PC auch gestartet`
+        title: 'Bei Start von Windows ausführen.',
+        label: `Wenn diese Option aktiv ist, wird das ${dpg} bei jedem Start des PC auch gestartet.`
       }
     },
     buttons: {

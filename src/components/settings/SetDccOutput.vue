@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-select filled v-model="output" :options="outputOptions" label="Filled" />
+    <q-select filled v-model="output" :options="outputOptions" label="Output" />
   </div>
 </template>
 <script setup>

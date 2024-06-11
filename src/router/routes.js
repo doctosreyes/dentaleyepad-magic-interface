@@ -34,6 +34,13 @@ const routes = [
         }
       },
       {
+        path: 'userSettings',
+        component: () => import('pages/UserSettingsPage.vue'),
+        beforeEnter: (to, from) => {
+          window.pl.send('setBounds', bounds)
+        }
+      },
+      {
         path: 'input',
         component: () => import('pages/InputPage.vue'),
         beforeEnter: (to, from) => {

@@ -2,13 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <q-header style="height: 30px" class="bg-grey-1">
       <q-toolbar @click.self="handleTitleClick">
-        <q-btn flat dense>
-          <online-support width="20px" />
-          <q-tooltip>
-            online support
-          </q-tooltip>
-        </q-btn>
-
+        <UserMenu></UserMenu>
         <q-toolbar-title style="font-size: 0.8rem; padding: 0" class="q-electron-drag text-grey-9">
          <span>dentaleyepad</span>
         </q-toolbar-title>
@@ -22,30 +16,13 @@
       show-if-above
       bordered
     >
+    {{ version }}
       <q-item v-if="devMode" class="q-mt-sm" to="/tests">
         <q-item-section avatar>
           <q-icon name="test" />
         </q-item-section>
         <q-item-section>
           <q-item-label>Test</q-item-label>
-        </q-item-section>
-      </q-item>
-
-      <q-item v-if="updateIsAvailable" class="q-mt-sm" to="/update">
-        <q-item-section avatar>
-          <q-icon name="update" />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label>Update<br/> verfügbar</q-item-label>
-        </q-item-section>
-      </q-item>
-
-      <q-item class="q-mt-sm" to="/">
-        <q-item-section avatar>
-          <q-icon name="home" />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label>Home</q-item-label>
         </q-item-section>
       </q-item>
 
@@ -75,15 +52,6 @@
           <q-item-label>Output</q-item-label>
         </q-item-section>
       </q-item>
-
-      <q-item class="q-mt-sm" to="/remoteSupport">
-        <q-item-section avatar>
-          <q-icon name="settings" />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label>Online Support</q-item-label>
-        </q-item-section>
-      </q-item>
     </q-drawer>
 
     <q-page-container>
@@ -93,30 +61,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import UserMenu from '../components/UserMenu.vue'
+import { ref } from 'vue'
 import log from 'electron-log'
 import { useI18n } from 'vue-i18n'
-import onlineSupport from 'src/assets/onlineSupport.vue'
+import { version } from '../../package.json'
 
 defineOptions({
   name: 'MainLayout'
 })
 
 const devMode = ref(process.env.DEV)
-
-// #region UPDATE available
-const updateIsAvailable = ref(false)
-onMounted(() => {
-  window.pl.getSettingValue('updateAvailable')
-    .then((isAvailable) => {
-      updateIsAvailable.value = isAvailable
-    })
-    .catch(err => log.error(err))
-})
-onUnmounted(() => {
-
-})
-// #endregion
 
 // #region LANGUAGE
 const { locale } = useI18n({ useScope: 'global' })
