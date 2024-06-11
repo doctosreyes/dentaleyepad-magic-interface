@@ -1,6 +1,6 @@
 {
   "name": "dentaleyepad-magic-interface",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Grab patient data for the dentaleyepad from doctorseyes GmbH",
   "productName": "dentaleyepad-magic-interface",
   "author": "doctorseyes GmbH",
