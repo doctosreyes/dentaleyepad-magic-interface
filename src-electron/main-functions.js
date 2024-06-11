@@ -91,15 +91,22 @@ function _readPatientFile (pathPatientFile) {
                     if (err) {
                       log.error(err)
                     } else {
+                      const sanitize = require('sanitize-filename')
                       mainWindow.show()
                       mainWindow.focus()
                       data = data.split('|')
+                      const practiceId = data[0]
+                      const patientId = data[1]
+                      let lastName = data[2]
+                      lastName = sanitize(lastName)
+                      let firstName = data[3]
+                      firstName = sanitize(firstName)
                       let birthDay = data[4]
                       if (birthDay.indexOf('.') > -1) {
                         const birthArr = birthDay.split('.')
                         birthDay = `${birthArr[2]}${birthArr[1]}${birthArr[0]}`
                       }
-                      data = `${data[0]}|${data[1]}|${data[2]}|${data[3]}|${birthDay}`
+                      data = `${practiceId}|${patientId}|${lastName}|${firstName}|${birthDay}`
                       log.debug(`BIRTHDAY: ${birthDay}`)
                       mainWindow.webContents.send('args', process.env.DEV ? data : data)
                     }
