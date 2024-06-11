@@ -26,13 +26,19 @@ function initSettings () {
 }
 
 function createWindow () {
-  /**
-   * Initial window options
-   */
-  mainWindow = new BrowserWindow({
-    icon: path.resolve(__dirname, 'icons/icon.png'), // tray icon
+  const windowState = settings.getSync('windowState') || {
     width: 150,
     height: 210,
+    x: undefined,
+    y: undefined
+  }
+
+  mainWindow = new BrowserWindow({
+    icon: path.resolve(__dirname, 'icons/icon.png'), // tray icon
+    width: windowState.width,
+    height: windowState.height,
+    x: windowState.x,
+    y: windowState.y,
     frame: false,
     useContentSize: true,
     webPreferences: {
@@ -53,6 +59,17 @@ function createWindow () {
       mainWindow.webContents.closeDevTools()
     })
   }
+
+  // Position und Größe bei Änderung speichern
+  mainWindow.on('resize', () => {
+    const { width, height } = mainWindow.getBounds()
+    settings.set('windowState', { ...settings.getSync('windowState'), width, height })
+  })
+
+  mainWindow.on('move', () => {
+    const { x, y } = mainWindow.getBounds()
+    settings.set('windowState', { ...settings.getSync('windowState'), x, y })
+  })
 
   mainWindow.on('closed', () => {
     mainWindow = null
