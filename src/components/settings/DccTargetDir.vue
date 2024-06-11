@@ -2,7 +2,7 @@
   <div class="flex flex-center">
     <div class="column">
       <div class="row">
-        <q-btn class="q-ml-sm" @click="selectDccDirPath">Wähle hier das "Zielverzeichnis", welches im dentaleyepad-control-center eingestelt ist</q-btn>
+        <q-btn class="q-ml-sm" @click="selectDccDirPath">{{ t('components.settings.dccTargetDir.btn') }}</q-btn>
       </div>
       <div class="row">
         {{ dccTargetDirPath }}
@@ -33,6 +33,9 @@ import log from 'electron-log'
 import useSelectPath from '../../compopsables/useSelectPath.js'
 import { ref, onMounted, watch } from 'vue'
 // import axios from 'axios'
+
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
 
 const { selectPath, selectedPath } = useSelectPath()
 const dccTargetDirPath = ref(undefined)

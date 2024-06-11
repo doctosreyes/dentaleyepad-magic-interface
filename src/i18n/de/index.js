@@ -5,13 +5,16 @@ export default {
   file: 'Datei',
   components: {
     settings: {
+      dccTargetDir: {
+        btn: 'Wähle hier das "Zielverzeichnis", welches im dentaleyepad-control-center eingestellt ist'
+      },
       charly: {
         title: 'Solutio Charly - Datei Input',
         hint: ''
       },
       autostart: {
         title: 'Bei Start von Windows ausführen',
-        label: `Wenn diese Option aktiv ist, wird der ${dpg} bei jedem Start des PC auch gestartet`
+        label: `Wenn diese Option aktiv ist, wird das ${dpg} bei jedem Start des PC auch gestartet`
       }
     },
     buttons: {
