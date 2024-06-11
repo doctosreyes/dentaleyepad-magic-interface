@@ -1,8 +1,8 @@
 {
-  "name": "dentaleyepad-patient-grabber",
+  "name": "dentaleyepad-magic-interface",
   "version": "0.0.7",
   "description": "Grab patient data for the dentaleyepad from doctorseyes GmbH",
-  "productName": "dentaleyepad-patient-grabber",
+  "productName": "dentaleyepad-magic-interface",
   "author": "doctorseyes GmbH",
   "private": true,
   "scripts": {

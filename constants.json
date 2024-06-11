@@ -1,9 +1,9 @@
 {
   "app": {
-    "title": "dentaleyepad-patient-grabber"
+    "title": "dentaleyepad-magic-interface"
   },
   "remote": {
-    "sos": "https://patient-grabber.dentaleyepad.de/remote/SplashtopSOS.exe",
-    "qs": "https://patient-grabber.dentaleyepad.de/remote/TeamViewerQS.exe"
+    "sos": "https://magic-interface.dentaleyepad.de/remote/SplashtopSOS.exe",
+    "qs": "https://magic-interface.dentaleyepad.de/remote/TeamViewerQS.exe"
   }
 }

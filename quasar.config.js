@@ -199,11 +199,11 @@ module.exports = configure(function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: "dentaleyepad-patient-grabber",
+        appId: "dentaleyepad-magic-interface",
         win: {
           publish: [{
             provider: 'generic',
-            url: 'https://patient-grabber.dentaleyepad.de/v0',
+            url: 'https://magic-interface.dentaleyepad.de/v0',
             channel: 'latest'
           }]
         }
