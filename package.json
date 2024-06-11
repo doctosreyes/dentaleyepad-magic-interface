@@ -20,6 +20,7 @@
     "electron-log": "^5.1.2",
     "electron-settings": "^4.0.3",
     "electron-updater": "^6.1.8",
+    "ocr-space-api-wrapper": "^2.3.1",
     "pinia": "^2.0.11",
     "qrcode": "^1.5.3",
     "quasar": "^2.8.0",
