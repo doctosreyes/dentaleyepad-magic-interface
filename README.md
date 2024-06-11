@@ -1,4 +1,4 @@
-# dentaleyepad-patient-grabber (dentaleyepad-patient-grabber)
+# dentaleyepad-magic-interface (dentaleyepad-magic-interface)
 
 Grab patient data for the dentaleyepad from doctorseyes GmbH
 
