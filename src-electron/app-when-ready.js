@@ -27,16 +27,14 @@ function initSettings () {
 
 function createWindow () {
   const windowState = settings.getSync('windowState') || {
-    width: 150,
-    height: 210,
     x: undefined,
     y: undefined
   }
 
   mainWindow = new BrowserWindow({
     icon: path.resolve(__dirname, 'icons/icon.png'), // tray icon
-    width: windowState.width,
-    height: windowState.height,
+    width: 150,
+    height: 210,
     x: windowState.x,
     y: windowState.y,
     frame: false,
@@ -59,12 +57,6 @@ function createWindow () {
       mainWindow.webContents.closeDevTools()
     })
   }
-
-  // Position und Größe bei Änderung speichern
-  mainWindow.on('resize', () => {
-    const { width, height } = mainWindow.getBounds()
-    settings.set('windowState', { ...settings.getSync('windowState'), width, height })
-  })
 
   mainWindow.on('move', () => {
     const { x, y } = mainWindow.getBounds()
