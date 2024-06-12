@@ -54,7 +54,13 @@ const routes = [
           window.pl.send('setBounds', bounds)
         }
       },
-      { path: 'tests', component: () => import('pages/TestsPage.vue') },
+      {
+        path: 'tests',
+        component: () => import('pages/TestsPage.vue'),
+        beforeEnter: (to, from) => {
+          window.pl.send('setBounds', { width: 800, height: 600 })
+        }
+      },
       {
         path: 'setDccTargetDir',
         component: () => import('pages/SetDccTargetDirPage.vue'),
