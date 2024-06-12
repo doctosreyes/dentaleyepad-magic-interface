@@ -1,8 +1,8 @@
 import { app, globalShortcut, ipcMain } from 'electron'
 import path from 'path'
-import settings from './AppSettings'
+import settings from '../AppSettings'
 import log from 'electron-log'
-import { mainWindow } from '../app-when-ready'
+import { mainWindow } from '../../app-when-ready'
 
 const { ocrSpace } = require('ocr-space-api-wrapper')
 const tempPath = app.getPath('temp')
@@ -188,3 +188,9 @@ export default class OcrScan {
     return inputString.replace(/[^\w\s-]/gi, '')
   }
 }
+
+ipcMain.on('registerShortcut', (ev, data) => {
+  log.debug(`registerShortcut: ${data}`)
+  const ocrScan = new OcrScan()
+  ocrScan.registerGlobalShortcut()
+})
