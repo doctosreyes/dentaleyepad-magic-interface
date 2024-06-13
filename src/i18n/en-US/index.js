@@ -4,7 +4,7 @@ export const dpg = `${dep}-magic-interface`
 export default {
   path: 'path',
   file: 'file',
-  tooltips: {
+  menu: {
     settings: 'Settings',
     update: 'Update is available'
   },

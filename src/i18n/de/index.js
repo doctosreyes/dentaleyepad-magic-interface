@@ -3,9 +3,9 @@ import { dpg } from '../en-US/index'
 export default {
   path: 'Pfad',
   file: 'Datei',
-  tooltips: {
+  menu: {
     settings: 'Einstellungen',
-    update: 'Ein Update ist verfügbar.'
+    update: 'Update ist verfügbar.'
   },
   components: {
     settings: {
