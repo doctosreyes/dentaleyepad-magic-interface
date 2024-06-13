@@ -171,7 +171,7 @@ const settings = {
       }
 
       // Return the value
-      log.debug(`AppSettings -> ${key} is ${obj}`)
+      log.debug(`AppSettings -> ${key} is ${JSON.stringify(obj)}`)
       resolve(obj)
     })
   },
@@ -193,7 +193,7 @@ const settings = {
     }
 
     // Return the value
-    log.debug(`AppSettings -> ${key} is ${obj}`)
+    log.debug(`AppSettings -> ${key} is ${JSON.stringify(obj)}`)
     return obj
   },
 
