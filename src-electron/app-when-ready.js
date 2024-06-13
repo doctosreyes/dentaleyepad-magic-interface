@@ -6,7 +6,7 @@ import constants from '../constants.json'
 import log from 'electron-log'
 import settings from 'app/src-electron/app/AppSettings'
 import autoUpdate from './app/autoUpdate'
-import OcrScan from './app/ocrScan'
+import OcrScan from './app/ocrScan/ocrScan'
 
 let mainWindow, appTray
 
@@ -14,6 +14,7 @@ autoUpdate()
 
 // #region OCR
 function activateOcrScan () {
+  log.debug('Activate OCR-Scan')
   const ocrScan = new OcrScan()
   ocrScan.registerGlobalShortcut()
   ocrScan.listenToScreenshotCaptured()
@@ -46,7 +47,7 @@ function createWindow () {
   mainWindow = new BrowserWindow({
     icon: path.resolve(__dirname, 'icons/icon.png'), // tray icon
     width: 150,
-    height: 210,
+    height: 260,
     x: windowState.x,
     y: windowState.y,
     frame: false,

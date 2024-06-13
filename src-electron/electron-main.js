@@ -28,7 +28,19 @@ if (!gotTheLock) {
     initSettings()
     createWindow()
     createTray()
-    activateOcrScan()
+    settings.has('patientFile')
+      .then((res) => {
+        if (res) {
+          settings.get('patientFile')
+            .then((res) => {
+              if (res === false) {
+                activateOcrScan()
+              }
+            })
+        } else {
+          activateOcrScan()
+        }
+      })
   })
 
   app.on('window-all-closed', () => {
