@@ -1,5 +1,4 @@
 <template>
-    <q-menu>
       {{ version }}
 
       <q-list style="min-width: 30px">
@@ -39,7 +38,6 @@
           </q-item-section>
         </q-item>
       </q-list>
-    </q-menu>
 </template>
 
 <script setup>
