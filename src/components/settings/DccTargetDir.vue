@@ -1,36 +1,52 @@
 <template>
-  <div class="flex flex-center">
-    <div class="column">
+  <div>
+    <QrCodeButton></QrCodeButton>
+    <q-card class="q-mt-sm q-pa-sm">
       <div class="row">
-        <q-btn class="q-ml-sm" @click="selectDccDirPath">{{ t('components.settings.dccTargetDir.btn') }}</q-btn>
+
+        <div class="col-4">
+          <div>
+            <q-btn @click="selectDccDirPath">Wähle Zielverzeichnis</q-btn>
+          </div>
+        </div>
+
+        <div class="col-8">
+          <div class="q-ml-md">
+            {{ t('components.settings.dccTargetDir.btn') }} <br/>{{ dccTargetDirPath }}
+          </div>
+          <div v-if="readError" class="row text-negative">
+            <p>
+              {{ readError }}
+            </p>
+          </div>
+          <div v-if="warning" class="row text-warning">
+            <p>
+              {{ warning }}
+            </p>
+          </div>
+        </div>
       </div>
+      <hr/>
+      <strong>Daten</strong>
       <div class="row">
-        {{ dccTargetDirPath }}
+        <div class="col-6">
+          Connector: {{ dccSettings !== null ? dccSettings.connector : '' }} <br/>
+          IPs: {{ dccSettings !== null ? dccSettings.ips : '' }}
+        </div>
+
+        <div class="col-6">
+          Output: {{ dccSettings !== null ? dccSettings.output : '' }}
+        </div>
+
       </div>
-      <div v-if="readError" class="row text-negative">
-        <p>
-          {{ readError }}
-        </p>
-      </div>
-      <div v-if="warning" class="row text-warning">
-        <p>
-          {{ warning }}
-        </p>
-      </div>
-      <div>
-        {{ dccSettings }}
-      </div>
-      <q-btn v-if="showHomeBtn" dense flat @click="$router.push('/')" icon="chevron_left">
-      <q-tooltip>
-        Home
-      </q-tooltip>
-    </q-btn>
-    </div>
+      <hr/>
+    </q-card>
   </div>
 </template>
 <script setup>
 import log from 'electron-log'
 import useSelectPath from '../../compopsables/useSelectPath.js'
+import QrCodeButton from '../buttons/QrCodeButton.vue'
 import { ref, onMounted, watch } from 'vue'
 // import axios from 'axios'
 
@@ -48,6 +64,7 @@ onMounted(() => {
   window.pl.getSettingValue('dccTargetDir')
     .then((res) => {
       dccTargetDirPath.value = res
+      _readDccDataFile()
     }).catch(err => log.error(err))
 })
 
