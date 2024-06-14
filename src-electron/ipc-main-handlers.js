@@ -7,7 +7,7 @@ import { iconPath } from './electron-main'
 import path from 'path'
 import settings from './app/AppSettings'
 
-ipcMain.on('args', (ev, data) => {
+ipcMain.on('args', (ev, data) => { // get by comand
   mainWindow.webContents.send('args', data)
   log.debug(`ipc-main-handlers send args: ${data}`)
 })
@@ -85,10 +85,22 @@ ipcMain.handle('executeCmd', async (ev, cmd) => {
   })
 })
 
+ipcMain.handle('getBounds', async () => {
+  log.debug('ipcMain.handle getBounds')
+  return new Promise((resolve, reject) => {
+    resolve(mainWindow.getBounds())
+  })
+})
+
 ipcMain.on('checkDirAndMake', (ev, dir) => {
   mainWindow.setAlwaysOnTop(true)
   log.debug(`AppSettings checkDirAndMake ${dir}`)
   return settings.checkDirAndMake(dir)
+})
+
+ipcMain.on('takeScreenshot', (ev, data) => {
+  log.debug(`IpcMain.ON TAKE SCREENSHOT: ${JSON.stringify(data)}`)
+  mainWindow.webContents.send('takeScreenshot', data)
 })
 
 app.on('before-quit', () => {
@@ -97,4 +109,5 @@ app.on('before-quit', () => {
   ipcMain.removeAllListeners('appRestart')
   ipcMain.removeAllListeners('showMainWindows')
   ipcMain.removeAllListeners('args')
+  ipcMain.removeAllListeners('takeScreenshot')
 })
