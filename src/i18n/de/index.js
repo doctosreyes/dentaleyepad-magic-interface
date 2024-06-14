@@ -10,7 +10,7 @@ export default {
   components: {
     settings: {
       dccTargetDir: {
-        btn: 'Wähle hier das "Zielverzeichnis", welches im dentaleyepad-control-center eingestellt ist.'
+        btn: '"Zielverzeichnis", welches im dentaleyepad-control-center eingestellt ist.'
       },
       charly: {
         title: 'Solutio Charly - Datei Input',

@@ -11,7 +11,7 @@ export default {
   components: {
     settings: {
       dccTargetDir: {
-        btn: 'Select the “target directory” here, which is set in the dentaleyepad-control-center'
+        btn: '“target directory” which is set in the dentaleyepad-control-center'
       },
       charly: {
         title: 'Solutio Charly - File Input',
