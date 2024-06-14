@@ -1,9 +1,7 @@
 <template>
   <div>
-    <div>
-      <QrCode />
-      <OutputButton class="q-mt-sm" />
-    </div>
+    <QrCode />
+    <OutputButton class="q-mt-sm" />
   </div>
 </template>
 

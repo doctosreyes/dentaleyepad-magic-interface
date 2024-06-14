@@ -108,7 +108,7 @@ function _readPatientFile (pathPatientFile) {
                       }
                       data = `${practiceId}|${patientId}|${lastName}|${firstName}|${birthDay}`
                       log.debug(`BIRTHDAY: ${birthDay}`)
-                      mainWindow.webContents.send('args', process.env.DEV ? data : data)
+                      mainWindow.webContents.send('args', data)
                     }
                   })
                 }
