@@ -1,15 +1,12 @@
 <template>
   <q-page padding>
-    <q-btn class="q-mt-sm q-ml-sm" dense flat @click="$router.push('/')" icon="chevron_left">
-      <q-tooltip>
-        Home
-      </q-tooltip>
-    </q-btn>
+    <QrCodeButton></QrCodeButton>
     <AutoStartSetting></AutoStartSetting>
     <XnView></XnView>
   </q-page>
 </template>
 <script setup>
+import QrCodeButton from 'src/components/buttons/QrCodeButton.vue'
 import AutoStartSetting from '../components/settings/AutoStartSetting.vue'
 import XnView from 'src/components/settings/XnView.vue'
 </script>

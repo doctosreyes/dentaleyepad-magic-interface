@@ -1,11 +1,7 @@
 <template>
   <q-page padding>
-    <q-btn dense flat @click="$router.push('/')" icon="chevron_left">
-      <q-tooltip>
-        Home
-      </q-tooltip>
-    </q-btn>
-    <q-btn v-if="isUpdateAvailable" @click="makeUpdate">
+    <QrCodeButton></QrCodeButton>
+    <q-btn v-if="isUpdateAvailable" @click="makeUpdate" class="q-mt-xl">
       download update
     </q-btn>
     <span v-if="showProgress">{{ downloadProgess }} %</span>
@@ -13,6 +9,7 @@
   </q-page>
 </template>
 <script setup>
+import QrCodeButton from 'src/components/buttons/QrCodeButton.vue'
 import { ref, onMounted, onUnmounted } from 'vue'
 import log from 'electron-log'
 
