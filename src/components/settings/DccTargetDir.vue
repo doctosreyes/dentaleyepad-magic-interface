@@ -39,7 +39,6 @@
         </div>
 
       </div>
-      <hr/>
     </q-card>
   </div>
 </template>
