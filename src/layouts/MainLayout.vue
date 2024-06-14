@@ -11,11 +11,9 @@
     </q-header>
     <q-drawer
       v-model="supportDrawerOpen"
-      side="left"
       :width="200"
-      :breakpoint="200"
-      elevated
-      class="bg-blue-1"
+      :breakpoint="userDrawerBreakpoint"
+      class="bg-blue-2"
     >
       <SupportMenu></SupportMenu>
     </q-drawer>
@@ -43,6 +41,8 @@ import { ref, onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 defineOptions({
   name: 'MainLayout'
@@ -75,10 +75,12 @@ window.pl
 // #region TRAY
 const closeAppToTray = () => {
   log.debug('closeAppToTray')
-  const router = useRouter()
-  router.push('/')
-  /* open.value = false
-  window.pl.send('closeAppToTray') */
+  log.debug(`ROUTER currentRoute path: ${router.currentRoute.value.path}`)
+  if (router.currentRoute.value.path !== '/') {
+    router.push('/')
+  }
+  supportDrawerOpen.value = false
+  window.pl.send('closeAppToTray')
 }
 // #endregion
 
