@@ -25,14 +25,18 @@ const routes = [
         path: 'remoteSupport',
         component: () => import('pages/RemoteSupportPage.vue'),
         beforeEnter: (to, from) => {
-          window.pl.send('setBounds', bounds)
+          const userDrawer = useUserDrawerStore()
+          const qrCodeBounds = userDrawer.open ? { width: userDrawer.width + qrCodeWidth, height: qrCodeHeight } : { width: qrCodeWidth, height: qrCodeHeight }
+          window.pl.send('setBounds', qrCodeBounds)
         }
       },
       {
         path: 'update',
         component: () => import('pages/UpdatePage.vue'),
         beforeEnter: (to, from) => {
-          window.pl.send('setBounds', bounds)
+          const userDrawer = useUserDrawerStore()
+          const qrCodeBounds = userDrawer.open ? { width: userDrawer.width + qrCodeWidth, height: qrCodeHeight } : { width: qrCodeWidth, height: qrCodeHeight }
+          window.pl.send('setBounds', qrCodeBounds)
         }
       },
       {

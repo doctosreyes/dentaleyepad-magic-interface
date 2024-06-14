@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <QrCodeButton></QrCodeButton>
-    <q-btn v-if="isUpdateAvailable" @click="makeUpdate" class="q-mt-xl">
+    <q-btn v-if="isUpdateAvailable" @click="makeUpdate" class="q-mt-md">
       download update
     </q-btn>
     <span v-if="showProgress">{{ downloadProgess }} %</span>
