@@ -1,5 +1,5 @@
 <template>
   <div>
-    <q-btn @click="$router.push('/')">Qr-Code</q-btn>
+    <q-btn class="text-white" rounded unelevated style="background-color: #0090d7" @click="$router.push('/')">Qr-Code</q-btn>
   </div>
 </template>
