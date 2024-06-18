@@ -66,7 +66,6 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  window.pl.removeReceiveListener('args')
   window.pl.removeReceiveListener('resetQrCode')
 })
 </script>
