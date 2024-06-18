@@ -1,8 +1,9 @@
-import { app, globalShortcut, ipcMain } from 'electron'
+import { app, globalShortcut, ipcMain, desktopCapturer } from 'electron'
 import path from 'path'
 import settings from '../AppSettings'
 import log from 'electron-log'
 import { mainWindow } from '../../app-when-ready'
+import { writeFile } from 'fs'
 
 const { ocrSpace } = require('ocr-space-api-wrapper')
 const tempPath = app.getPath('temp')
@@ -23,6 +24,43 @@ export default class OcrScan {
     this.patientString = ''
   }
 
+  async takeScreenshot (data) {
+    log.debug('OcrScan takeScreenshot')
+    try {
+      const sources = await desktopCapturer.getSources({ types: ['window'], thumbnailSize: { width: data.screenshotResolution.width, height: data.screenshotResolution.height } })
+      let sourceFound = false
+      for (const source of sources) {
+        if (source.name.includes(data.windowName)) {
+          sourceFound = true
+          const entireScreenImage = source.thumbnail
+          let image
+          if (data.crop === true) {
+            const specificArea = entireScreenImage.crop(data.rectangles[0])
+            image = specificArea.toPNG({ scaleFactor: 3 })
+          } else {
+            image = entireScreenImage.toPNG({ scaleFactor: 2 })
+          }
+          log.debug(`screenshotPath: ${data.screenshotPath}`)
+
+          writeFile(data.screenshotPath, image, (err) => {
+            if (err) return console.log(err)
+            log.debug('Screenshot of specific area saved to', data.screenshotPath)
+            this.scan(data.screenshotPath)
+          })
+        }
+      }
+      if (sourceFound === false) {
+        // TODO Dialog: "Bitte Fenster 'data.windowName' in den Vodergrund und Scan mit 'ocrShortcut' wiederholen"
+        mainWindow.show()
+        mainWindow.webContents.send('args', '')
+        mainWindow.webContents.send('showHourglass', false)
+      }
+    } catch (error) {
+      log.error(error)
+      throw Error(Error)
+    }
+  }
+
   listenToReloadOcrSettings () {
     ipcMain.on('reloadOcrSettings', () => {
       log.debug('ipcMain.on reloadOcrSettings')
@@ -39,8 +77,7 @@ export default class OcrScan {
   }
 
   getPatientString () {
-    // TODO control pateintSTring
-    this.patientString = `patient_${this.id}_${this.lastName}_${this.firstName}_${this.birhtdate}_${this.practiceId}`
+    this.patientString = `${this.id}|${this.lastName}|${this.firstName}|${this.birhtdate}|${this.practiceId}`
     return this.patientString
   }
 
@@ -64,15 +101,15 @@ export default class OcrScan {
   registerGlobalShortcut () {
     globalShortcut.register(this.ocrShortcut, () => {
       log.debug(`this.ocrShortcut: ${this.ocrShortcut}`)
-      mainWindow.webContents.send('takeScreenshot', {
+      mainWindow.show()
+      mainWindow.webContents.send('showHourglass', true)
+      this.takeScreenshot({
         screenshotResolution: this.screenshotResolution,
         windowName: this.windowName,
         rectangles: this.rectangles,
         crop: true,
         screenshotPath
       })
-      mainWindow.show()
-      mainWindow.webContents.send('showSpinner')
     })
   }
 
@@ -108,7 +145,7 @@ export default class OcrScan {
 
   async scan (screenshotPath) {
     try { // TODO add apiKey
-      this.scanResult = await ocrSpace(screenshotPath, { apiKey: '', ocrUrl: 'https://apipro2.ocr.space/parse/image', language: 'ger', OCREngine: 2, isTable: true, filetype: 'png' })
+      this.scanResult = await ocrSpace(screenshotPath, { apiKey: 'GPR846KEMPA5X', ocrUrl: 'https://apipro2.ocr.space/parse/image', language: 'ger', OCREngine: 2, isTable: true, filetype: 'png' })
       log.debug(this.scanResult)
       this.scanResultText = this.scanResult.ParsedResults[0].ParsedText
       log.info(this.scanResultText)
@@ -116,11 +153,12 @@ export default class OcrScan {
       if (recognizedID) {
         this.getWholeName()
         this.getPatientString()
-        mainWindow.webContents.send('patientString', this.patientString)
+        mainWindow.webContents.send('args', this.patientString)
       }
       // Using your personal API key + base64 image + custom language
       // const res3 = await ocrSpace('data:image/png;base64...', { apiKey: '<API_KEY_HERE>', language: 'ita' });
     } catch (error) {
+      // TODO Dialog mti Fehler, bei Bad Request z.B. wurde vieleicht Scrrenshot nicht erkannt (desktopCaturere Thumbnail zu klein?)
       log.error(error)
     }
   }
