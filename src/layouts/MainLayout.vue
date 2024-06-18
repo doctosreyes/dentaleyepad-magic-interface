@@ -37,7 +37,7 @@ import UserMenu from '../components/menus/UserMenu.vue'
 import SupportMenu from '../components/menus/SupportMenu.vue'
 import log from 'electron-log'
 import { useUserDrawerStore } from 'src/stores/user-drawer-store'
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
@@ -52,15 +52,6 @@ const getTitle = computed(() => {
   const title = open.value ? 'dentaleyepad-magic-interface' : 'dentaleyepad'
   return title
 })
-
-// #region SCREENSHOT
-onMounted(() => {
-  window.pl.receive('takeScreenshot', async (data) => {
-    log.debug(`MainLayout takeScreenhot data: ${JSON.stringify(data)}`)
-  })
-})
-
-// #endregion
 
 // #region LANGUAGE
 const { locale } = useI18n({ useScope: 'global' })
