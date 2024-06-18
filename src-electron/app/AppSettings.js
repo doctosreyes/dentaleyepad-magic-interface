@@ -94,7 +94,7 @@ const settings = {
   },
 
   setSync (key, value) {
-    log.debug(`AppSettings -> set key: ${key}, value: ${value}`)
+    log.debug(`AppSettings -> set key: ${key}, value: ${JSON.stringify(value)}`)
     // Split the key into parts
     const keys = key.split('.')
 
@@ -122,7 +122,7 @@ const settings = {
 
   set (key, value) {
     return new Promise((resolve, reject) => {
-      log.debug(`AppSettings -> set key: ${key}, value: ${value}`)
+      log.debug(`AppSettings -> set key: ${key}, value: ${JSON.stringify(value)}`)
       // Split the key into parts
       const keys = key.split('.')
 
