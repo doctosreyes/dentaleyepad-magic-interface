@@ -1,14 +1,17 @@
 <template>
-  <div>
-    <p class="relative-position text-subtitle1 text-bold">
+  <q-card flat>
+    <strong class="q-pa-sm text-h6">Charly</strong>
+    <q-card-section>
+      <p class="relative-position text-subtitle1 text-bold">
       <span style="width: 80%">{{ $t('components.settings.charly.title') }}</span>
       <q-toggle class="absolute-right" v-model="patientFile" color="primary" />
-    </p>
-    <p v-if="patientFile">
-      <strong>{{ $t('file') }} - {{ $t('path') }}:</strong> {{ patientFilePath }}
-    </p>
+      </p>
+      <p v-if="patientFile">
+        <strong>{{ $t('file') }} - {{ $t('path') }}:</strong> {{ patientFilePath }}
+      </p>
+    </q-card-section>
 
-  </div>
+  </q-card>
 </template>
 
 <script setup>
