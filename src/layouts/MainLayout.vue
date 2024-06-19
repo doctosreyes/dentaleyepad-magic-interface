@@ -37,11 +37,29 @@ import UserMenu from '../components/menus/UserMenu.vue'
 import SupportMenu from '../components/menus/SupportMenu.vue'
 import log from 'electron-log'
 import { useUserDrawerStore } from 'src/stores/user-drawer-store'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import { useMyDialogStore } from 'src/stores/my-dialog-store'
+import { useQuasar } from 'quasar'
 
+// #region DIALOG
+const { msg } = storeToRefs(useMyDialogStore())
+const myDialogStore = useMyDialogStore()
+const $q = useQuasar()
+const onOkCallbacks = [() => { log.debug('onOkCallback ID 0 from Class OcrScan') }, () => { log.debug('onOkCallback ID 1 from TestDialog') }]
+onMounted(() => {
+  window.pl.receive('MainLayoutDialog', (data) => {
+    const id = data.onOkCallbackID
+    msg.value = data.text
+    myDialogStore.onOkCallback = onOkCallbacks[id]
+    myDialogStore.openMyDialog($q)
+  })
+})
+// #endregion
+
+// #region ROUTER
 const router = useRouter()
 
 defineOptions({
