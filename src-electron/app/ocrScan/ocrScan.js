@@ -51,7 +51,7 @@ export default class OcrScan {
       }
       if (sourceFound === false) {
         mainWindow.fullScreen = true
-        const dialogObj = { text: `Bitte Fenster ${data.windowName} in den Vodergrund und Scan mit ${this.ocrShortcut} wiederholen`, onOkCallbackID: 0 }
+        const dialogObj = { text: `Bitte Fenster mit Titelinhalt: "${data.windowName}" öffnen und in den Vordergrund, anschliessend Scan mit Shortcut: "${this.ocrShortcut}" wiederholen`, onOkCallbackID: 0 }
         mainWindow.webContents.send('MainLayoutDialog', dialogObj)
         mainWindow.show()
         mainWindow.webContents.send('args', '')
