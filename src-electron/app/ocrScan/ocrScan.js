@@ -50,7 +50,9 @@ export default class OcrScan {
         }
       }
       if (sourceFound === false) {
-        // TODO Dialog: "Bitte Fenster 'data.windowName' in den Vodergrund und Scan mit 'ocrShortcut' wiederholen"
+        mainWindow.fullScreen = true
+        const dialogObj = { text: `Bitte Fenster ${data.windowName} in den Vodergrund und Scan mit ${this.ocrShortcut} wiederholen`, onOkCallbackID: 0 }
+        mainWindow.webContents.send('MainLayoutDialog', dialogObj)
         mainWindow.show()
         mainWindow.webContents.send('args', '')
         mainWindow.webContents.send('showHourglass', false)
