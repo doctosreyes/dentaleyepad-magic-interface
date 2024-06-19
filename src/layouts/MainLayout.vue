@@ -2,7 +2,7 @@
   <q-layout view="hHh Lpr lff">
     <q-header elevated style="background-color: #0090d7">
       <q-toolbar style="padding: 0" @click.self="handleTitleClick">
-        <q-btn flat round dense @click="toggleLeftDrawer" icon="menu" />
+        <q-btn v-if="hasDccTargetDir" flat round dense @click="toggleLeftDrawer" icon="menu" />
         <q-toolbar-title style="font-size: 0.8rem; padding: 0" class="q-ml-xs q-electron-drag">
          <span v-html="getTitle"></span>
         </q-toolbar-title>
@@ -43,6 +43,14 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useMyDialogStore } from 'src/stores/my-dialog-store'
 import { useQuasar } from 'quasar'
+import useDccDmiSettings from 'src/compopsables/useDccDmiSettings'
+
+// DCC TARGET DIR
+const { hasDccTargetDir, getTargetDirPathAndReadData } = useDccDmiSettings()
+onMounted(() => {
+  getTargetDirPathAndReadData()
+})
+// #endregion
 
 // #region DIALOG
 const { msg } = storeToRefs(useMyDialogStore())
@@ -107,6 +115,7 @@ const handleTitleClick = (event) => {
 // #region USER DRAWER
 const userDrawer = useUserDrawerStore()
 const { open, width } = storeToRefs(userDrawer)
+
 const getBounds = async () => {
   return await window.pl.invoke('getBounds')
 }
