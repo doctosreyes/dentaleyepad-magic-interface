@@ -103,11 +103,23 @@ ipcMain.on('takeScreenshot', (ev, data) => {
   mainWindow.webContents.send('takeScreenshot', data)
 })
 
+ipcMain.on('MainLayoutDialog', (ev, data) => {
+  log.debug(`IpcMain.ON MainLayoutDialog: ${JSON.stringify(data)}`)
+  mainWindow.webContents.send('MainLayoutDialog', data)
+})
+
+ipcMain.on('leaveFullScreen', (ev, data) => {
+  log.debug(`IpcMain.ON leaveFullScreen: ${JSON.stringify(data)}`)
+  mainWindow.fullScreen = false
+})
+
 app.on('before-quit', () => {
   ipcMain.removeAllListeners('startRomexisLoaderBat')
   ipcMain.removeAllListeners('closeAppToTray')
   ipcMain.removeAllListeners('appRestart')
   ipcMain.removeAllListeners('showMainWindows')
   ipcMain.removeAllListeners('args')
+  ipcMain.removeAllListeners('MainLayoutDialog')
   ipcMain.removeAllListeners('takeScreenshot')
+  ipcMain.removeAllListeners('leaveFullScreen')
 })
