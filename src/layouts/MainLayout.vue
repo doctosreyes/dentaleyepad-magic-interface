@@ -6,7 +6,7 @@
         <q-toolbar-title style="font-size: 0.8rem; padding: 0" class="q-ml-xs q-electron-drag">
          <span v-html="getTitle"></span>
         </q-toolbar-title>
-        <q-btn style="font-size: 0.8rem" flat dense @click="closeAppToTray()" icon="close" />
+        <q-btn style="font-size: 0.8rem" flat dense @click="closeAppToTray(router)" icon="close" />
       </q-toolbar>
     </q-header>
     <q-drawer
@@ -37,13 +37,18 @@ import UserMenu from '../components/menus/UserMenu.vue'
 import SupportMenu from '../components/menus/SupportMenu.vue'
 import log from 'electron-log'
 import { useUserDrawerStore } from 'src/stores/user-drawer-store'
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useMyDialogStore } from 'src/stores/my-dialog-store'
 import { useQuasar } from 'quasar'
 import useDccDmiSettings from 'src/compopsables/useDccDmiSettings'
+import useHelperFunctions from 'src/compopsables/useHelperFunctions'
+
+defineOptions({
+  name: 'MainLayout'
+})
 
 // DCC TARGET DIR
 const { hasDccTargetDir, getTargetDirPathAndReadData } = useDccDmiSettings()
@@ -70,10 +75,6 @@ onMounted(() => {
 // #region ROUTER
 const router = useRouter()
 
-defineOptions({
-  name: 'MainLayout'
-})
-
 const getTitle = computed(() => {
   const title = open.value ? 'dentaleyepad-magic-interface' : 'dentaleyepad'
   return title
@@ -89,20 +90,7 @@ window.pl
   .catch((err) => log.error(err))
 // #endregion LANGUAGE
 
-// #region TRAY
-const closeAppToTray = () => {
-  log.debug('closeAppToTray')
-  log.debug(`ROUTER currentRoute path: ${router.currentRoute.value.path}`)
-  if (router.currentRoute.value.path !== '/') {
-    router.push('/')
-  }
-  supportDrawerOpen.value = false
-  window.pl.send('closeAppToTray')
-}
-// #endregion
-
 // #region SUPPORT DRAWER
-const supportDrawerOpen = ref(false)
 const handleTitleClick = (event) => {
   log.debug('handleCLick')
   if (event.ctrlKey) {
@@ -112,26 +100,32 @@ const handleTitleClick = (event) => {
 }
 // #endregion
 
+const { closeAppToTray, getBounds } = useHelperFunctions()
+
 // #region USER DRAWER
 const userDrawer = useUserDrawerStore()
-const { open, width } = storeToRefs(userDrawer)
-
-const getBounds = async () => {
-  return await window.pl.invoke('getBounds')
-}
+const { open, width, supportDrawerOpen } = storeToRefs(userDrawer)
 const userDrawerBreakpoint = 140
 const toggleLeftDrawer = () => {
   getBounds()
     .then((bounds) => {
       log.debug(`bounds: ${JSON.stringify(bounds)}`)
       if (open.value) {
-        window.pl.send('setBounds', { width: bounds.width - width.value })
-        open.value = false
+        closeLeftDrawer(bounds)
       } else {
-        window.pl.send('setBounds', { width: bounds.width + width.value })
-        open.value = true
+        openLeftDrawer(bounds)
       }
     })
+}
+
+const openLeftDrawer = (bounds) => {
+  window.pl.send('setBounds', { width: bounds.width + width.value })
+  open.value = true
+}
+
+const closeLeftDrawer = (bounds) => {
+  if (router.currentRoute.value.path === '/') window.pl.send('setBounds', { width: bounds.width - width.value })
+  closeAppToTray(router)
 }
 // #endregion
 </script>
