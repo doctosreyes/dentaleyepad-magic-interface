@@ -1,17 +1,17 @@
 <template>
   <div>
-    <q-card class="q-mt-sm q-pa-sm">
+    <q-card flat class="q-mt-sm q-pa-sm">
       <div class="row">
 
         <div class="col-4">
           <div>
-            <q-btn @click="selectDccDirPath">Wähle Zielverzeichnis</q-btn>
+            <q-btn @click="selectDccDirPath">{{ t('components.settings.dccTargetDir.btn') }}</q-btn>
           </div>
         </div>
 
         <div class="col-8">
           <div class="q-ml-md">
-            {{ t('components.settings.dccTargetDir.btn') }} <br/>{{ dccTargetDirPath }}
+            {{ t('components.settings.dccTargetDir.hint') }} <br/>{{ dccTargetDirPath }}
           </div>
           <div v-if="readError" class="row text-negative">
             <p>
@@ -25,9 +25,9 @@
           </div>
         </div>
       </div>
+      <hr v-if="hasDccTargetDir" />
+      <div v-if="hasDccTargetDir"><strong>{{ t('components.settings.dccTargetDir.data') }}</strong></div>
       <div v-if="hasDccTargetDir" class="row">
-        <hr/>
-        <div><strong>Daten</strong></div>
 
         <div class="col-6">
           Connector: {{ dccSettings !== null ? dccSettings.connector : '' }} <br/>

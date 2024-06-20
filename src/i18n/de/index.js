@@ -3,6 +3,7 @@ import { dpg } from '../en-US/index'
 export default {
   path: 'Pfad',
   file: 'Datei',
+  close: 'schließen',
   errorMsg: {
     ocrScan: {
       noId: 'ID wurde nicht erkannt, bitte nochmals versuchen.\nFalls dieser Fehler bestehen bleibt rufen Sie bitte den "doctorseyes support" an.'
@@ -15,7 +16,9 @@ export default {
   components: {
     settings: {
       dccTargetDir: {
-        btn: '"Zielverzeichnis", welches im dentaleyepad-control-center eingestellt ist.'
+        hint: 'Zielverzeichnis des control center.',
+        btn: 'Wähle Zielverzeichnis',
+        data: 'Einstellungen aus dem control center'
       },
       charly: {
         title: 'Solutio Charly - Datei Input',

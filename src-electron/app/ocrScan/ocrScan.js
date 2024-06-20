@@ -51,7 +51,7 @@ export default class OcrScan {
       }
       if (sourceFound === false) {
         mainWindow.fullScreen = true
-        const dialogObj = { text: `Bitte Fenster mit Titelinhalt: "${data.windowName}" öffnen und in den Vordergrund, anschliessend Scan mit Shortcut: "${this.ocrShortcut}" wiederholen`, onOkCallbackID: 0 }
+        const dialogObj = { text: `Bitte Fenster mit Titelinhalt: "${data.windowName}" öffnen und in den Vordergrund, anschliessend den Scan wiederholen`, onOkCallbackID: 0 }
         mainWindow.webContents.send('MainLayoutDialog', dialogObj)
         mainWindow.show()
         mainWindow.webContents.send('args', '')
@@ -146,7 +146,7 @@ export default class OcrScan {
   }
 
   async scan (screenshotPath) {
-    try { // TODO add apiKey
+    try { // TODO add map of "Quasar Langauge Code" to "OCR-Space Language Code", example "de" to "ger" for variable and selectable use at ocrSpace request here
       this.scanResult = await ocrSpace(screenshotPath, { apiKey: 'GPR846KEMPA5X', ocrUrl: 'https://apipro2.ocr.space/parse/image', language: 'ger', OCREngine: 2, isTable: true, filetype: 'png' })
       log.debug(this.scanResult)
       this.scanResultText = this.scanResult.ParsedResults[0].ParsedText
@@ -170,7 +170,10 @@ export default class OcrScan {
     const indexOfCloseBrace = this.scanResultText.indexOf(')')
     log.debug(`ID results: ${this.indexOfOpenBrace}, ${indexOfCloseBrace}`)
     if (this.indexOfOpenBrace === -1 || indexOfCloseBrace === -1) {
-      mainWindow.webContents.send('patientFileNoID', 'ID not recognized')
+      mainWindow.webContents.send('patientFileNoID')
+      mainWindow.show()
+      mainWindow.webContents.send('args', '')
+      mainWindow.webContents.send('showHourglass', false)
       return false
     }
     this.id = this.scanResultText.substring(this.indexOfOpenBrace + 1, indexOfCloseBrace)

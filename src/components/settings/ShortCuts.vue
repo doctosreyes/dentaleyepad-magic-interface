@@ -1,5 +1,5 @@
 <template>
-  <q-card class="q-mt-sm q-pa-sm">
+  <q-card flat class="q-mt-sm q-pa-sm">
     Shortcuts
     <q-card-section>
       <div class="row">

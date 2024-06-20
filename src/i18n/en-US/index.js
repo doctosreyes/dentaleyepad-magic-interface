@@ -4,6 +4,7 @@ export const dpg = `${dep}-magic-interface`
 export default {
   path: 'path',
   file: 'file',
+  close: 'close',
   errorMsg: {
     ocrScan: {
       noId: 'ID not recognized, please try again.\nIn case that error will stay, call doctorseyes Support '
@@ -16,7 +17,9 @@ export default {
   components: {
     settings: {
       dccTargetDir: {
-        btn: '“target directory” which is set in the dentaleyepad-control-center'
+        hint: 'target directory of the control center',
+        btn: 'select target directory',
+        data: 'Settings from the control center'
       },
       charly: {
         title: 'Solutio Charly - File Input',

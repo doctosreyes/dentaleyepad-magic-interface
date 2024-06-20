@@ -50,7 +50,7 @@ onMounted(() => {
       XnViewPath.value = res
     })
 
-  window.pl.getSettingValue('dccTargetDir') // TODO Change to dataFile before use in PRODUCTION
+  window.pl.getSettingValue('dccTargetDir')
     .then((res) => {
       targetPath.value = res
     })

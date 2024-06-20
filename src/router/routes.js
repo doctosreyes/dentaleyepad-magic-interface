@@ -1,7 +1,10 @@
 import { useUserDrawerStore } from 'src/stores/user-drawer-store'
 import log from 'electron-log'
 
-const bounds = { width: 600, height: 375 }
+const sendBounds = () => {
+  const userDrawer = useUserDrawerStore()
+  window.pl.send('setBounds', { width: userDrawer.bounds.width, height: userDrawer.bounds.height })
+}
 
 const routes = [
   {
@@ -14,8 +17,8 @@ const routes = [
         beforeEnter: (to, from) => {
           const userDrawer = useUserDrawerStore()
           if (userDrawer.open) userDrawer.open = false
-          const qrCodeBounds = userDrawer.open ? { width: userDrawer.width + userDrawer.qrCodeWidth, height: userDrawer.qrCodeHeight } : { width: userDrawer.qrCodeWidth, height: userDrawer.qrCodeHeight }
-          log.debug(`routes.js userDrawerWidth: ${userDrawer.width}`)
+          const qrCodeBounds = userDrawer.open ? { width: userDrawer.width + userDrawer.qrCodeBounds.width, height: userDrawer.qrCodeBounds.height } : { width: userDrawer.qrCodeBounds.width, height: userDrawer.qrCodeBounds.height }
+          log.debug(`routes.js userDrawerWidth: ${JSON.stringify(userDrawer.qrCodeBounds)}`)
           window.pl.send('setBounds', qrCodeBounds)
         }
       },
@@ -23,56 +26,56 @@ const routes = [
         path: 'remoteSupport',
         component: () => import('pages/RemoteSupportPage.vue'),
         beforeEnter: (to, from) => {
-          window.pl.send('setBounds', bounds)
+          sendBounds()
         }
       },
       {
         path: 'update',
         component: () => import('pages/UpdatePage.vue'),
         beforeEnter: (to, from) => {
-          window.pl.send('setBounds', bounds)
+          sendBounds()
         }
       },
       {
         path: 'settings',
         component: () => import('pages/SettingsPage.vue'),
         beforeEnter: (to, from) => {
-          window.pl.send('setBounds', bounds)
+          sendBounds()
         }
       },
       {
         path: 'userSettings',
         component: () => import('pages/UserSettingsPage.vue'),
         beforeEnter: (to, from) => {
-          window.pl.send('setBounds', bounds)
+          sendBounds()
         }
       },
       {
         path: 'input',
         component: () => import('pages/InputPage.vue'),
         beforeEnter: (to, from) => {
-          window.pl.send('setBounds', bounds)
+          sendBounds()
         }
       },
       {
         path: 'output',
         component: () => import('pages/OutputPage.vue'),
         beforeEnter: (to, from) => {
-          window.pl.send('setBounds', bounds)
+          sendBounds()
         }
       },
       {
         path: 'tests',
         component: () => import('pages/TestsPage.vue'),
         beforeEnter: (to, from) => {
-          window.pl.send('setBounds', bounds)
+          sendBounds()
         }
       },
       {
         path: 'setDccTargetDir',
         component: () => import('pages/SetDccTargetDirPage.vue'),
         beforeEnter: (to, from) => {
-          window.pl.send('setBounds', bounds)
+          sendBounds()
         }
       }
     ]
