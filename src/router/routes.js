@@ -1,10 +1,7 @@
 import { useUserDrawerStore } from 'src/stores/user-drawer-store'
 import log from 'electron-log'
 
-const bounds = { width: 800, height: 600 }
-
-const qrCodeWidth = 154
-const qrCodeHeight = 260
+const bounds = { width: 600, height: 375 }
 
 const routes = [
   {
@@ -16,7 +13,8 @@ const routes = [
         component: () => import('pages/IndexPage.vue'),
         beforeEnter: (to, from) => {
           const userDrawer = useUserDrawerStore()
-          const qrCodeBounds = userDrawer.open ? { width: userDrawer.width + qrCodeWidth, height: qrCodeHeight } : { width: qrCodeWidth, height: qrCodeHeight }
+          if (userDrawer.open) userDrawer.open = false
+          const qrCodeBounds = userDrawer.open ? { width: userDrawer.width + userDrawer.qrCodeWidth, height: userDrawer.qrCodeHeight } : { width: userDrawer.qrCodeWidth, height: userDrawer.qrCodeHeight }
           log.debug(`routes.js userDrawerWidth: ${userDrawer.width}`)
           window.pl.send('setBounds', qrCodeBounds)
         }
@@ -25,18 +23,14 @@ const routes = [
         path: 'remoteSupport',
         component: () => import('pages/RemoteSupportPage.vue'),
         beforeEnter: (to, from) => {
-          const userDrawer = useUserDrawerStore()
-          const qrCodeBounds = userDrawer.open ? { width: userDrawer.width + qrCodeWidth, height: qrCodeHeight } : { width: qrCodeWidth, height: qrCodeHeight }
-          window.pl.send('setBounds', qrCodeBounds)
+          window.pl.send('setBounds', bounds)
         }
       },
       {
         path: 'update',
         component: () => import('pages/UpdatePage.vue'),
         beforeEnter: (to, from) => {
-          const userDrawer = useUserDrawerStore()
-          const qrCodeBounds = userDrawer.open ? { width: userDrawer.width + qrCodeWidth, height: qrCodeHeight } : { width: qrCodeWidth, height: qrCodeHeight }
-          window.pl.send('setBounds', qrCodeBounds)
+          window.pl.send('setBounds', bounds)
         }
       },
       {
