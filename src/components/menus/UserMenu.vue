@@ -7,13 +7,13 @@
         </div>
       </q-item-section>
     </q-item>
-    <q-item to="/">
+    <!-- <q-item to="/">
       <q-item-section>
         <div class="row">
           <q-icon name="home" size="xs" /><label class="q-ml-md">QR Code</label>
         </div>
       </q-item-section>
-    </q-item>
+    </q-item> -->
     <q-item to="/userSettings">
       <q-item-section>
         <div class="row">
