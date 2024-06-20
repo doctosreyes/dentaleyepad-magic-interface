@@ -1,10 +1,10 @@
 <template>
   <q-page padding>
-    <QrCodeButton></QrCodeButton>
     <doc-sos></doc-sos>
+    <CloseButton></CloseButton>
   </q-page>
 </template>
 <script setup>
-import QrCodeButton from 'src/components/buttons/QrCodeButton.vue'
+import CloseButton from 'src/components/buttons/CloseButton.vue'
 import docSos from 'src/components/docSos.vue'
 </script>

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <QrCodeButton v-if="hasDccTargetDir"></QrCodeButton>
     <q-card class="q-mt-sm q-pa-sm">
       <div class="row">
 
@@ -46,7 +45,6 @@
 <script setup>
 import log from 'electron-log'
 import useSelectPath from '../../compopsables/useSelectPath.js'
-import QrCodeButton from '../buttons/QrCodeButton.vue'
 import { onMounted, watch } from 'vue'
 // import axios from 'axios'
 import useDccDmiSettings from 'src/compopsables/useDccDmiSettings.js'

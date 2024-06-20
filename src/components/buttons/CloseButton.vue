@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-btn class="text-white" rounded unelevated style="background-color: #0090d7" @click="closeAppToTray(router)">{{ $t('close') }}</q-btn>
+    <q-btn class="text-white q-mt-sm" rounded unelevated style="background-color: #0090d7" @click="closeAppToTray(router)">{{ $t('close') }}</q-btn>
   </div>
 </template>
 <script setup>
