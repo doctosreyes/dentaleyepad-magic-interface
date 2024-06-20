@@ -4,6 +4,11 @@ export const dpg = `${dep}-magic-interface`
 export default {
   path: 'path',
   file: 'file',
+  errorMsg: {
+    ocrScan: {
+      noId: 'ID not recognized, please try again.\nIn case that error will stay, call doctorseyes Support '
+    }
+  },
   menu: {
     settings: 'Settings',
     update: 'Update is available'

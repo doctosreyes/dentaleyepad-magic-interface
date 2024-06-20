@@ -3,6 +3,11 @@ import { dpg } from '../en-US/index'
 export default {
   path: 'Pfad',
   file: 'Datei',
+  errorMsg: {
+    ocrScan: {
+      noId: 'ID wurde nicht erkannt, bitte nochmals versuchen.\nFalls dieser Fehler bestehen bleibt rufen Sie bitte den "doctorseyes support" an.'
+    }
+  },
   menu: {
     settings: 'Einstellungen',
     update: 'Update ist verfügbar.'

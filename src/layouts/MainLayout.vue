@@ -37,7 +37,7 @@ import UserMenu from '../components/menus/UserMenu.vue'
 import SupportMenu from '../components/menus/SupportMenu.vue'
 import log from 'electron-log'
 import { useUserDrawerStore } from 'src/stores/user-drawer-store'
-import { computed, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
@@ -45,6 +45,8 @@ import { useMyDialogStore } from 'src/stores/my-dialog-store'
 import { useQuasar } from 'quasar'
 import useDccDmiSettings from 'src/compopsables/useDccDmiSettings'
 import useHelperFunctions from 'src/compopsables/useHelperFunctions'
+
+const { t } = useI18n()
 
 defineOptions({
   name: 'MainLayout'
@@ -62,6 +64,17 @@ const { msg } = storeToRefs(useMyDialogStore())
 const myDialogStore = useMyDialogStore()
 const $q = useQuasar()
 const onOkCallbacks = [() => { log.debug('onOkCallback ID 0 from Class OcrScan') }, () => { log.debug('onOkCallback ID 1 from TestDialog') }]
+// #region RECEIVER ERROR DIALOGS
+const noID = ref(t('errorMsg.ocrScan.noId'))
+onMounted(() => {
+  window.pl.receive('patientFileNoID', () => {
+    msg.value = noID.value
+    myDialogStore.onOkCallback = () => { closeAppToTray(router) }
+    myDialogStore.openMyDialog($q)
+  })
+})
+// #endregion
+
 onMounted(() => {
   window.pl.receive('MainLayoutDialog', (data) => {
     const id = data.onOkCallbackID
