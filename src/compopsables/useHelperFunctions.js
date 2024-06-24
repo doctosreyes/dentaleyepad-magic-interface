@@ -4,28 +4,25 @@ import { useUserDrawerStore } from 'src/stores/user-drawer-store'
 
 // #region USER DRAWER
 const userDrawer = useUserDrawerStore()
-const { open, width, supportDrawerOpen } = storeToRefs(userDrawer)
+const { open, supportDrawerOpen } = storeToRefs(userDrawer)
 
 export default function useHelperFunctions () {
   const getBounds = async () => {
     return await window.pl.invoke('getBounds')
   }
   function closeAppToTray (router) {
-    getBounds()
-      .then((bounds) => {
-        log.debug(`bounds: ${JSON.stringify(bounds)}`)
-        log.debug('closeAppToTray')
-        log.debug(`ROUTER currentRoute path: ${router.currentRoute.value.path}`)
-        if (open.value) {
-          open.value = false
-          window.pl.send('setBounds', { width: bounds.width - width.value })
-        }
-        supportDrawerOpen.value = false
-        if (router.currentRoute.value.path !== '/') {
-          router.push('/')
-        }
-        window.pl.send('closeAppToTray')
-      })
+    log.debug('closeAppToTray')
+    log.debug(`ROUTER currentRoute path: ${router.currentRoute.value.path}`)
+    if (open.value) {
+      open.value = false
+    }
+    supportDrawerOpen.value = false
+    if (router.currentRoute.value.path !== '/') {
+      router.push('/')
+    } else {
+      window.pl.send('setBounds', { width: userDrawer.qrCodeBounds.width, height: userDrawer.qrCodeBounds.height })
+    }
+    window.pl.send('closeAppToTray')
   }
 
   return {

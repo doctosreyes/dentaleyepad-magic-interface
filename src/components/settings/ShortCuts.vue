@@ -1,19 +1,12 @@
 <template>
-  <q-card flat class="q-mt-sm q-pa-sm">
-    Shortcuts
+  <q-card flat class="">
+    <div class="text-h6">
+      Shortcuts
+    </div>
+
     <q-card-section>
-      <div class="row">
-
-        <div class="col-8">
-          <q-input disable id="ocr" v-model="ocr"></q-input>
-        </div>
-
-        <div class="col-4">
-          <q-btn v-if="showChgBtn" class="q-ml-sm" >Ändern {{ showChgBtn }}</q-btn>
-        </div>
-
-      </div>
-
+      <q-input disable id="ocr" v-model="ocr"></q-input>
+      <q-btn v-if="showChgBtn">Ändern {{ showChgBtn }}</q-btn>
     </q-card-section>
 
   </q-card>

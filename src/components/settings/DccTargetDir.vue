@@ -1,43 +1,33 @@
 <template>
   <div>
-    <q-card flat class="q-mt-sm q-pa-sm">
-      <div class="row">
-
-        <div class="col-4">
-          <div>
-            <q-btn @click="selectDccDirPath">{{ t('components.settings.dccTargetDir.btn') }}</q-btn>
-          </div>
-        </div>
-
-        <div class="col-8">
-          <div class="q-ml-md">
-            {{ t('components.settings.dccTargetDir.hint') }} <br/>{{ dccTargetDirPath }}
-          </div>
-          <div v-if="readError" class="row text-negative">
-            <p>
-              {{ readError }}
-            </p>
-          </div>
-          <div v-if="warning" class="row text-warning">
-            <p>
-              {{ warning }}
-            </p>
-          </div>
-        </div>
+    <q-card flat>
+      <div class="text-h6">
+        {{ t('components.settings.dccTargetDir.hint') }}
+      </div>
+      <div class="q-my-sm">
+        <q-btn @click="selectDccDirPath">{{ t('components.settings.dccTargetDir.btn') }}</q-btn>
+      </div>
+      Zielverzeichnis: <!-- TODO translate -->
+      <div class="q-mt-xs">
+        {{ dccTargetDirPath }}
+      </div>
+      <div v-if="readError" class="row text-negative">
+        <p>
+          {{ readError }}
+        </p>
+      </div>
+      <div v-if="warning" class="row text-warning">
+        <p>
+          {{ warning }}
+        </p>
       </div>
       <hr v-if="hasDccTargetDir" />
       <div v-if="hasDccTargetDir"><strong>{{ t('components.settings.dccTargetDir.data') }}</strong></div>
-      <div v-if="hasDccTargetDir" class="row">
-
-        <div class="col-6">
-          Connector: {{ dccSettings !== null ? dccSettings.connector : '' }} <br/>
-          IPs: {{ dccSettings !== null ? dccSettings.ips : '' }}
-        </div>
-
-        <div class="col-6">
-          Output: {{ dccSettings !== null ? dccSettings.output : '' }}
-        </div>
-
+      <div v-if="hasDccTargetDir">
+        Connector: {{ dccSettings !== null ? dccSettings.connector : '' }} <br/>
+        IPs: {{ dccSettings !== null ? dccSettings.ips : '' }} <br/>
+        Output: {{ dccSettings !== null ? dccSettings.output : '' }} <br/>
+        OCR Shortcut: {{ ocrShortcut }}
       </div>
     </q-card>
   </div>
@@ -45,12 +35,21 @@
 <script setup>
 import log from 'electron-log'
 import useSelectPath from '../../compopsables/useSelectPath.js'
-import { onMounted, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 // import axios from 'axios'
 import useDccDmiSettings from 'src/compopsables/useDccDmiSettings.js'
 
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
+
+// #region OCR Shortcut
+const ocrShortcut = ref(null)
+onMounted(() => {
+  window.pl.invoke('getSettingValue', 'shortcuts')
+    .then((res) => {
+      ocrShortcut.value = res.ocr
+    })
+})
 
 const { selectPath, selectedPath } = useSelectPath()
 const { hasDccTargetDir, dccSettings, warning, readError, dccTargetDirPath, getTargetDirPathAndReadData } = useDccDmiSettings()

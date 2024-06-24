@@ -116,28 +116,24 @@ const { closeAppToTray, getBounds } = useHelperFunctions()
 
 // #region USER DRAWER
 const userDrawer = useUserDrawerStore()
-const { open, width, supportDrawerOpen } = storeToRefs(userDrawer)
+const { open, supportDrawerOpen } = storeToRefs(userDrawer)
 const userDrawerBreakpoint = 140
 const toggleLeftDrawer = () => {
   getBounds()
-    .then((bounds) => {
-      log.debug(`bounds: ${JSON.stringify(bounds)}`)
-      if (open.value) {
-        closeLeftDrawer(bounds)
+    .then((actualBounds) => {
+      log.debug(`actualBounds: ${JSON.stringify(actualBounds)}`)
+      if (!open.value) {
+        window.pl.send('setBounds', { width: userDrawer.bounds.width, height: userDrawer.bounds.height })
+        open.value = true
       } else {
-        openLeftDrawer(bounds)
+        open.value = false
+        if (router.currentRoute.value.path === '/') {
+          window.pl.send('setBounds', { width: userDrawer.qrCodeBounds.width, height: userDrawer.qrCodeBounds.height })
+        } else {
+          router.push('/')
+        }
       }
     })
-}
-
-const openLeftDrawer = (bounds) => {
-  window.pl.send('setBounds', { width: bounds.width + width.value })
-  open.value = true
-}
-
-const closeLeftDrawer = (bounds) => {
-  if (router.currentRoute.value.path === '/') window.pl.send('setBounds', { width: bounds.width - width.value })
-  closeAppToTray(router)
 }
 // #endregion
 </script>
